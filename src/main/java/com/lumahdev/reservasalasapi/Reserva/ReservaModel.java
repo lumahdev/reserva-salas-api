@@ -1,12 +1,10 @@
 package com.lumahdev.reservasalasapi.Reserva;
 
 import com.lumahdev.reservasalasapi.Sala.SalaModel;
-import com.lumahdev.reservasalasapi.Sala.SalaStatusEnum;
-import com.lumahdev.reservasalasapi.Usuario.UsuarioModel;
+import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table
@@ -15,13 +13,13 @@ public class ReservaModel {
     private LocalDate dataInicio;
     private LocalDate dataFim;
     @ManyToOne private SalaModel sala;
-    @ManyToOne private UsuarioModel usuario;
+    @ManyToOne private Usuario usuario;
     private ReservaStatusEnum status;
 
     public ReservaModel() {
     }
 
-    public ReservaModel(LocalDate dataInicio, LocalDate dataFim, SalaModel sala, UsuarioModel usuario) {
+    public ReservaModel(LocalDate dataInicio, LocalDate dataFim, SalaModel sala, Usuario usuario) {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.sala = sala;
@@ -41,7 +39,7 @@ public class ReservaModel {
         return sala;
     }
 
-    public UsuarioModel getUsuario() {
+    public Usuario getUsuario() {
         return usuario;
     }
 
