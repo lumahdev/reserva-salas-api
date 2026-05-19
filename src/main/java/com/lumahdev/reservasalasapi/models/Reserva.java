@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Entity
+@Table
 public class Reserva {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long reservaId;
     private LocalDate dataInicio;
