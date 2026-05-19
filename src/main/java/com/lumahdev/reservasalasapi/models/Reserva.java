@@ -4,17 +4,15 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
 
 @Entity
 public class Reserva {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long reservaId;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    @OneToOne private Sala sala;
-    @OneToMany private Usuario usuario;
+    @ManyToOne private Sala sala;
+    @ManyToOne private Usuario usuario;
     private StatusReserva status;
-    private Scanner scanner;
 
     public Reserva(LocalDate dataInicio, LocalDate dataFim, Sala sala, Usuario usuario) {
         this.dataInicio = dataInicio;
