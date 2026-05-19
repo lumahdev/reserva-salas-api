@@ -1,30 +1,26 @@
-package com.lumahdev.reservasalasapi.models;
+package com.lumahdev.reservasalasapi.Sala;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table
-public class Sala {
+public class SalaModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long salaId;
     private String nome;
     private int capacidade;
     private String andar;
     private String bloco;
-    private StatusSala status;
+    private SalaStatusEnum status;
 
-    public Sala() {
+    public SalaModel() {
     }
 
-    public Sala(String nome, int capacidade, String andar, String bloco) {
-        if (capacidade < 1) {
-            throw new IllegalArgumentException("A capacidade deve ser maior que 0.");
-        }
-
+    public SalaModel(String nome, int capacidade, String andar, String bloco) {
         this.nome = nome;
         this.capacidade = capacidade;
         this.andar = andar;
         this.bloco = bloco;
-        this.status = StatusSala.DISPONIVEL;
+        this.status = SalaStatusEnum.DISPONIVEL;
     }
 
     public String getNome() {
@@ -43,12 +39,12 @@ public class Sala {
         return bloco;
     }
 
-    public StatusSala getStatus() {
+    public SalaStatusEnum getStatus() {
         return status;
     }
 
     public void setStatusIndisponivel() {
-        this.status = StatusSala.INDISPONIVEL;
+        this.status = SalaStatusEnum.INDISPONIVEL;
     }
 
     @Override

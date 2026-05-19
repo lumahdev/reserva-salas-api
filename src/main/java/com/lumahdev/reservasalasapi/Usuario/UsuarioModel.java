@@ -1,25 +1,17 @@
-package com.lumahdev.reservasalasapi.models;
+package com.lumahdev.reservasalasapi.Usuario;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table
-public class Usuario {
+public class UsuarioModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long usuarioId;
     private String nome;
     private String sobrenome;
     private String email;
     private String telefone;
 
-    public Usuario() {
-    }
-
-    public Usuario(Long usuarioId, String nome, String sobrenome, String email, String telefone) {
-        this.usuarioId = usuarioId;
-        this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.email = email;
-        this.telefone = telefone;
+    public UsuarioModel() {
     }
 
     public String getNome() {
