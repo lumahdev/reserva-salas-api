@@ -4,14 +4,21 @@ import jakarta.persistence.*;
 
 @Entity
 @Table
-public class UsuarioModel {
+public class Usuario {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long usuarioId;
     private String nome;
     private String sobrenome;
     private String email;
     private String telefone;
 
-    public UsuarioModel() {
+    public Usuario() {
+    }
+
+    public Usuario(DtoCadastroUsuario dto) {
+        this.nome = dto.nome();
+        this.sobrenome = dto.nome();
+        this.email = dto.email();
+        this.telefone = dto.telefone();
     }
 
     public String getNome() {
