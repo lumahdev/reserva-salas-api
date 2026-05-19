@@ -15,6 +15,9 @@ public class Reserva {
     @ManyToOne private Usuario usuario;
     private StatusReserva status;
 
+    public Reserva() {
+    }
+
     public Reserva(LocalDate dataInicio, LocalDate dataFim, Sala sala, Usuario usuario) {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;

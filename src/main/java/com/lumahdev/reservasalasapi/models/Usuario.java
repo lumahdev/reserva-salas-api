@@ -11,6 +11,9 @@ public class Usuario {
     private String email;
     private String telefone;
 
+    public Usuario() {
+    }
+
     public Usuario(Long usuarioId, String nome, String sobrenome, String email, String telefone) {
         this.usuarioId = usuarioId;
         this.nome = nome;

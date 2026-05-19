@@ -12,6 +12,9 @@ public class Sala {
     private String bloco;
     private StatusSala status;
 
+    public Sala() {
+    }
+
     public Sala(String nome, int capacidade, String andar, String bloco) {
         if (capacidade < 1) {
             throw new IllegalArgumentException("A capacidade deve ser maior que 0.");
