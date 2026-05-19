@@ -16,7 +16,7 @@ public class Usuario {
 
     public Usuario(DtoCadastroUsuario dto) {
         this.nome = dto.nome();
-        this.sobrenome = dto.nome();
+        this.sobrenome = dto.sobrenome();
         this.email = dto.email();
         this.telefone = dto.telefone();
     }
