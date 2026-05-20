@@ -21,22 +21,6 @@ public class Usuario {
         this.telefone = dto.telefone();
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public String getSobrenome() {
-        return sobrenome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
     @Override
     public String toString() {
         return "Usuario{" +

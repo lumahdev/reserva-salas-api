@@ -23,30 +23,6 @@ public class Sala {
         this.status = SalaStatusEnum.DISPONIVEL;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public int getCapacidade() {
-        return capacidade;
-    }
-
-    public String getAndar() {
-        return andar;
-    }
-
-    public String getBloco() {
-        return bloco;
-    }
-
-    public SalaStatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatusIndisponivel() {
-        this.status = SalaStatusEnum.INDISPONIVEL;
-    }
-
     @Override
     public String toString() {
         return "Sala{" +
