@@ -1,6 +1,6 @@
 package com.lumahdev.reservasalasapi.Reserva;
 
-import com.lumahdev.reservasalasapi.Sala.SalaModel;
+import com.lumahdev.reservasalasapi.Sala.Sala;
 import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import jakarta.persistence.*;
 
@@ -12,19 +12,11 @@ public class ReservaModel {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long reservaId;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    @ManyToOne private SalaModel sala;
+    @ManyToOne private Sala sala;
     @ManyToOne private Usuario usuario;
-    private ReservaStatusEnum status;
+    @Enumerated(EnumType.STRING) private ReservaStatusEnum status;
 
     public ReservaModel() {
-    }
-
-    public ReservaModel(LocalDate dataInicio, LocalDate dataFim, SalaModel sala, Usuario usuario) {
-        this.dataInicio = dataInicio;
-        this.dataFim = dataFim;
-        this.sala = sala;
-        this.usuario = usuario;
-        this.status = ReservaStatusEnum.ATIVA;
     }
 
     public LocalDate getDataInicio() {
@@ -35,7 +27,7 @@ public class ReservaModel {
         return dataFim;
     }
 
-    public SalaModel getSala() {
+    public Sala getSala() {
         return sala;
     }
 
