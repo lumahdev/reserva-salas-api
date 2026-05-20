@@ -28,15 +28,15 @@ public class ReservaController {
         return ResponseEntity.ok(reservas);
     }
 
-//    @GetMapping("/salas/{id}")
-//    public ResponseEntity<DtoSala> listarSala(@PathVariable Long id) {
-//        Sala sala = service.buscarSala(id);
-//        if (sala == null) {
-//            throw new Excecao("Não existe uma sala com este ID.");
-//        } else {
-//            return ResponseEntity.ok(new DtoSala(sala));
-//        }
-//    }
+    @GetMapping("/reservas/{id}")
+    public ResponseEntity<DtoReserva> listarReserva(@PathVariable Long id) {
+        Reserva reserva = service.buscarReserva(id);
+        if (reserva == null) {
+            throw new Excecao("Não existe uma reserva com este ID.");
+        } else {
+            return ResponseEntity.ok(new DtoReserva(reserva));
+        }
+    }
 //
 //    @PutMapping("/salas/{id}")
 //    public ResponseEntity<DtoSala> mudarDisponibilidadeSala(@PathVariable Long id) {
