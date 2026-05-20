@@ -4,22 +4,22 @@ import jakarta.persistence.*;
 
 @Entity
 @Table
-public class SalaModel {
+public class Sala {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long salaId;
     private String nome;
     private int capacidade;
     private String andar;
     private String bloco;
-    private SalaStatusEnum status;
+    @Enumerated(EnumType.STRING) private SalaStatusEnum status;
 
-    public SalaModel() {
+    public Sala() {
     }
 
-    public SalaModel(String nome, int capacidade, String andar, String bloco) {
-        this.nome = nome;
-        this.capacidade = capacidade;
-        this.andar = andar;
-        this.bloco = bloco;
+    public Sala(DtoCadastroSala dto) {
+        this.nome = dto.nome();
+        this.capacidade = dto.capacidade();
+        this.andar = dto.andar();
+        this.bloco = dto.bloco();
         this.status = SalaStatusEnum.DISPONIVEL;
     }
 
