@@ -37,10 +37,10 @@ public class ReservaController {
             return ResponseEntity.ok(new DtoReserva(reserva));
         }
     }
-//
-//    @PutMapping("/salas/{id}")
-//    public ResponseEntity<DtoSala> mudarDisponibilidadeSala(@PathVariable Long id) {
-//        Sala sala = service.mudarDisponibilidadeSala(id);
-//        return ResponseEntity.ok(new DtoSala(sala));
-//    }
+
+    @PutMapping("/reservas/{id}")
+    public ResponseEntity<DtoReserva> mudarDisponibilidadeReserva(@PathVariable Long id) {
+        Reserva reserva = service.mudarDisponibilidadeReserva(id);
+        return ResponseEntity.ok(new DtoReserva(reserva));
+    }
 }

@@ -4,6 +4,7 @@ import com.lumahdev.reservasalasapi.Excecao;
 import com.lumahdev.reservasalasapi.Sala.DtoSala;
 import com.lumahdev.reservasalasapi.Sala.Sala;
 import com.lumahdev.reservasalasapi.Sala.SalaRepository;
+import com.lumahdev.reservasalasapi.Sala.SalaStatusEnum;
 import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,5 +66,18 @@ public class ReservaService {
         return reservaRepository
                 .findById(id)
                 .orElse(null);
+    }
+
+    public Reserva mudarDisponibilidadeReserva(Long id) {
+        Reserva reserva = buscarReserva(id);
+        if(reserva == null){
+            throw new Excecao("Não existe uma reserva com este ID");
+        }
+        if(reserva.getStatus() == ReservaStatusEnum.ATIVA) {
+            reserva.setStatus(ReservaStatusEnum.CANCELADA);
+        } else {
+            reserva.setStatus(ReservaStatusEnum.ATIVA);
+        }
+        return reservaRepository.save(reserva);
     }
 }

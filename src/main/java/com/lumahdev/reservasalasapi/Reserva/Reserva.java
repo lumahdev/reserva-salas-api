@@ -48,4 +48,8 @@ public class Reserva {
     public ReservaStatusEnum getStatus() {
         return status;
     }
+
+    public void setStatus(ReservaStatusEnum status) {
+        this.status = status;
+    }
 }
