@@ -1,5 +1,6 @@
 package com.lumahdev.reservasalasapi.Sala;
 
+import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,8 @@ public class SalaController {
     private SalaService service;
 
     @PostMapping("/salas")
-    ResponseEntity<String> cadastrarSala(@RequestBody @Valid DtoCadastroSala dto) {
-        try {
-            service.cadastrarSala(dto);
-            return ResponseEntity.ok().build();
-
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<DtoSala> cadastrarSala(@RequestBody @Valid DtoCadastroSala dto) {
+        Sala sala = service.cadastrarSala(dto);
+        return ResponseEntity.ok(new DtoSala(sala));
     }
 }
