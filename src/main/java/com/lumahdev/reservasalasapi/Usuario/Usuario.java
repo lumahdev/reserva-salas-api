@@ -12,8 +12,7 @@ public class Usuario {
     private String email;
     private String telefone;
 
-    public Usuario() {
-    }
+    public Usuario() { }
 
     public Usuario(DtoCadastroUsuario dto) {
         this.nome = dto.nome();
