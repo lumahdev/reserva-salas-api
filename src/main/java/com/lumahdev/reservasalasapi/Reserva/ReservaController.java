@@ -14,13 +14,8 @@ public class ReservaController {
     private ReservaService service;
 
     @PostMapping("/reservas")
-    ResponseEntity<String> cadastrarReserva(@RequestBody @Valid DtoCadastroReserva dto) {
-        try {
-            service.cadastrarReserva(dto);
-            return ResponseEntity.ok().build();
-
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<DtoReserva> cadastrarReserva(@RequestBody @Valid DtoCadastroReserva dto) {
+        Reserva reserva = service.cadastrarReserva(dto);
+        return ResponseEntity.ok(new DtoReserva(reserva));
     }
 }
