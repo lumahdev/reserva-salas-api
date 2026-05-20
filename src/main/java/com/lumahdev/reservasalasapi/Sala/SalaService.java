@@ -1,6 +1,7 @@
 package com.lumahdev.reservasalasapi.Sala;
 
 import com.lumahdev.reservasalasapi.Excecao;
+import com.lumahdev.reservasalasapi.Usuario.DtoEditarUsuario;
 import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
 import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,18 @@ public class SalaService {
         return repository
                 .findById(id)
                 .orElse(null);
+    }
+
+    public Sala mudarDisponibilidadeSala(Long id) {
+        Sala sala = buscarSala(id);
+        if(sala == null){
+            throw new Excecao("Não existe uma sala com este ID");
+        }
+        if(sala.getStatus() == SalaStatusEnum.DISPONIVEL) {
+            sala.setStatus(SalaStatusEnum.INDISPONIVEL);
+        } else {
+            sala.setStatus(SalaStatusEnum.DISPONIVEL);
+        }
+        return repository.save(sala);
     }
 }

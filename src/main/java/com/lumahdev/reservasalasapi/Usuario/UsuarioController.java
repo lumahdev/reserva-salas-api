@@ -40,6 +40,5 @@ public class UsuarioController {
     public ResponseEntity<DtoUsuario> editarUsuario(@PathVariable Long id, @RequestBody @Valid DtoEditarUsuario dto) {
         Usuario usuario = service.editarUsuario(id, dto);
         return ResponseEntity.ok(new DtoUsuario(usuario));
-
     }
 }

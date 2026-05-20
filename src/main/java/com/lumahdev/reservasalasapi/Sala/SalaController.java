@@ -1,6 +1,7 @@
 package com.lumahdev.reservasalasapi.Sala;
 
 import com.lumahdev.reservasalasapi.Excecao;
+import com.lumahdev.reservasalasapi.Usuario.DtoEditarUsuario;
 import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
 import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import jakarta.validation.Valid;
@@ -29,12 +30,18 @@ public class SalaController {
     }
 
     @GetMapping("/salas/{id}")
-    public ResponseEntity<DtoSala> listarSalas(@PathVariable Long id) {
+    public ResponseEntity<DtoSala> listarSala(@PathVariable Long id) {
         Sala sala = service.buscarSala(id);
         if (sala == null) {
             throw new Excecao("Não existe uma sala com este ID.");
         } else {
             return ResponseEntity.ok(new DtoSala(sala));
         }
+    }
+
+    @PutMapping("/salas/{id}")
+    public ResponseEntity<DtoSala> mudarDisponibilidadeSala(@PathVariable Long id) {
+        Sala sala = service.mudarDisponibilidadeSala(id);
+        return ResponseEntity.ok(new DtoSala(sala));
     }
 }

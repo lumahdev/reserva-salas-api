@@ -46,4 +46,8 @@ public class Sala {
     public SalaStatusEnum getStatus() {
         return status;
     }
+
+    public void setStatus(SalaStatusEnum status) {
+        this.status = status;
+    }
 }
