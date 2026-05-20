@@ -2,6 +2,7 @@ package com.lumahdev.reservasalasapi.Sala;
 
 import com.lumahdev.reservasalasapi.Excecao;
 import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
+import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +30,11 @@ public class SalaService {
                 .stream()
                 .map(DtoSala::new)
                 .toList();
+    }
+
+    public Sala buscarSala(Long id) {
+        return repository
+                .findById(id)
+                .orElse(null);
     }
 }

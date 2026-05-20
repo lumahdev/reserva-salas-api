@@ -1,13 +1,12 @@
 package com.lumahdev.reservasalasapi.Sala;
 
+import com.lumahdev.reservasalasapi.Excecao;
 import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
+import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,5 +26,15 @@ public class SalaController {
     public ResponseEntity<List<DtoSala>> listarSalas() {
         List<DtoSala> salas = service.buscarSalas();
         return ResponseEntity.ok(salas);
+    }
+
+    @GetMapping("/salas/{id}")
+    public ResponseEntity<DtoSala> listarSalas(@PathVariable Long id) {
+        Sala sala = service.buscarSala(id);
+        if (sala == null) {
+            throw new Excecao("Não existe uma sala com este ID.");
+        } else {
+            return ResponseEntity.ok(new DtoSala(sala));
+        }
     }
 }
