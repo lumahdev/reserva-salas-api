@@ -9,13 +9,14 @@ public class SalaService {
     @Autowired
     private SalaRepository repository;
 
-    public void cadastrarSala(DtoCadastroSala dto) {
-        boolean jaCadastrada = repository.existsByNome(dto.nome());
+    private boolean checarSalaUnica(String nome) {
+        return repository.existsByNome(nome);
+    }
 
-        if(jaCadastrada) {
+    public Sala cadastrarSala(DtoCadastroSala dto) {
+        if(checarSalaUnica(dto.nome())) {
             throw new Excecao("Já existe uma sala cadastrada com estes dados.");
         }
-
-        repository.save(new Sala(dto));
+        return repository.save(new Sala(dto));
     }
 }
