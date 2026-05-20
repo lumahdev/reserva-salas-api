@@ -1,5 +1,6 @@
 package com.lumahdev.reservasalasapi.Usuario;
 
+import com.lumahdev.reservasalasapi.Excecao;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,9 @@ public class UsuarioController {
     private UsuarioService service;
 
     @PostMapping("/usuarios")
-    public ResponseEntity<String> cadastrarUsuario(@RequestBody @Valid DtoCadastroUsuario dto) {
-        try {
-            service.cadastrarUsuario(dto);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-           return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<DtoUsuario> cadastrarUsuario(@RequestBody @Valid DtoCadastroUsuario dto) {
+        Usuario usuario = service.cadastrarUsuario(dto);
+        return ResponseEntity.ok(new DtoUsuario(usuario));
     }
 
     @GetMapping("/usuarios")
@@ -29,13 +26,20 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
-    @PutMapping("/usuarios/{id}")
-    public ResponseEntity<String> editarUsuario(@PathVariable Long id, @RequestBody @Valid DtoEditarUsuario dto) {
-        try {
-            service.editarUsuario(id, dto);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @GetMapping("/usuarios/{id}")
+    public ResponseEntity<DtoUsuario> listarUsuario(@PathVariable Long id) {
+        Usuario usuario = service.buscarUsuario(id);
+        if (usuario == null) {
+            throw new Excecao("Não existe um usuário com este ID.");
+        } else {
+            return ResponseEntity.ok(new DtoUsuario(usuario));
         }
+    }
+
+    @PutMapping("/usuarios/{id}")
+    public ResponseEntity<DtoUsuario> editarUsuario(@PathVariable Long id, @RequestBody @Valid DtoEditarUsuario dto) {
+        Usuario usuario = service.editarUsuario(id, dto);
+        return ResponseEntity.ok(new DtoUsuario(usuario));
+
     }
 }

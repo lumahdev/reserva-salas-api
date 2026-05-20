@@ -1,12 +1,10 @@
 package com.lumahdev.reservasalasapi.Usuario;
 
 import com.lumahdev.reservasalasapi.Excecao;
-import org.hibernate.validator.internal.constraintvalidators.bv.NotNullValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -14,14 +12,21 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
-    public void cadastrarUsuario(DtoCadastroUsuario dto) {
-        boolean jaCadastrado = repository.existsByTelefoneOrEmail(dto.telefone(), dto.email());
+    private boolean checarUsuarioUnico(String telefone, String email) {
+        return repository.existsByTelefoneOrEmail(telefone, email);
+    }
 
-        if(jaCadastrado) {
+    public Usuario cadastrarUsuario(DtoCadastroUsuario dto) {
+        if(checarUsuarioUnico(dto.telefone(), dto.email())) {
             throw new Excecao("Já existe um usuário cadastrado com estes dados.");
         }
+        return repository.save(new Usuario(dto));
+    }
 
-        repository.save(new Usuario(dto));
+    public Usuario buscarUsuario(Long id) {
+        return repository
+                .findById(id)
+                .orElse(null);
     }
 
     public List<DtoUsuario> buscarUsuarios() {
@@ -32,14 +37,13 @@ public class UsuarioService {
                 .toList();
     }
 
-    public void editarUsuario(Long id, DtoEditarUsuario dto) {
-        Usuario usuario = repository
-                .findById(id)
-                .orElseThrow(() -> new Excecao("Não existe um usuário com este ID."));
-
+    public Usuario editarUsuario(Long id, DtoEditarUsuario dto) {
+        Usuario usuario = buscarUsuario(id);
+        if(usuario == null){
+            throw new Excecao("Não existe um usuário com este ID");
+        }
         usuario.setEmail(dto.email());
         usuario.setTelefone(dto.telefone());
-
-        repository.save(usuario);
+        return repository.save(usuario);
     }
 }
