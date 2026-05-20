@@ -22,6 +22,10 @@ public class Usuario {
         this.telefone = dto.telefone();
     }
 
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+
     public String getNome() {
         return nome;
     }
