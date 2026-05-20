@@ -4,6 +4,8 @@ import com.lumahdev.reservasalasapi.Excecao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UsuarioService {
     @Autowired
@@ -17,5 +19,13 @@ public class UsuarioService {
         }
 
         repository.save(new Usuario(dto));
+    }
+
+    public List<DtoUsuario> buscarUsuarios() {
+        return repository
+                .findAll()
+                .stream()
+                .map(DtoUsuario::new)
+                .toList();
     }
 }
