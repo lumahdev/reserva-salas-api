@@ -42,8 +42,9 @@ public class ReservaService {
             throw new Excecao("Data final não pode ser anterior à data inicial.");
         }
         boolean salaOcupada = reservaRepository
-                .existsBySalaIdAndDataInicioLessThanEqualAndDataFimGreaterThanEqual(
+                .existsBySalaIdAndStatusAndDataInicioLessThanEqualAndDataFimGreaterThanEqual(
                     dto.salaId(),
+                    ReservaStatusEnum.ATIVA,
                     dto.dataFim(),
                     dto.dataInicio()
                 );
