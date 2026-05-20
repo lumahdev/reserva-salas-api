@@ -1,8 +1,11 @@
 package com.lumahdev.reservasalasapi.Sala;
 
 import com.lumahdev.reservasalasapi.Excecao;
+import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class SalaService {
@@ -18,5 +21,13 @@ public class SalaService {
             throw new Excecao("Já existe uma sala cadastrada com estes dados.");
         }
         return repository.save(new Sala(dto));
+    }
+
+    public List<DtoSala> buscarSalas() {
+        return repository
+                .findAll()
+                .stream()
+                .map(DtoSala::new)
+                .toList();
     }
 }
