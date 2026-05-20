@@ -25,13 +25,27 @@ public class Reserva {
         this.status = ReservaStatusEnum.ATIVA;
     }
 
-    @Override
-    public String toString() {
-        return "Reserva{" +
-                "dataInicio=" + dataInicio +
-                ", dataFim=" + dataFim +
-                ", sala=" + salaId +
-                ", usuario=" + usuarioId +
-                '}';
+    public Long getReservaId() {
+        return reservaId;
+    }
+
+    public LocalDate getDataInicio() {
+        return dataInicio;
+    }
+
+    public LocalDate getDataFim() {
+        return dataFim;
+    }
+
+    public Long getSalaId() {
+        return salaId;
+    }
+
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public ReservaStatusEnum getStatus() {
+        return status;
     }
 }
