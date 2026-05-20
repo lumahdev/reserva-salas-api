@@ -23,14 +23,27 @@ public class Sala {
         this.status = SalaStatusEnum.DISPONIVEL;
     }
 
-    @Override
-    public String toString() {
-        return "Sala{" +
-                "nome='" + nome + '\'' +
-                ", capacidade=" + capacidade +
-                ", andar='" + andar + '\'' +
-                ", bloco='" + bloco + '\'' +
-                ", ativa=" + status +
-                '}';
+    public Long getSalaId() {
+        return salaId;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getCapacidade() {
+        return capacidade;
+    }
+
+    public String getAndar() {
+        return andar;
+    }
+
+    public String getBloco() {
+        return bloco;
+    }
+
+    public SalaStatusEnum getStatus() {
+        return status;
     }
 }
