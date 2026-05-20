@@ -1,10 +1,13 @@
 package com.lumahdev.reservasalasapi.Reserva;
 
 import com.lumahdev.reservasalasapi.Excecao;
+import com.lumahdev.reservasalasapi.Sala.DtoSala;
 import com.lumahdev.reservasalasapi.Sala.SalaRepository;
 import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ReservaService {
@@ -47,5 +50,13 @@ public class ReservaService {
         }
         Reserva reserva = new Reserva(dto);
         return reservaRepository.save(reserva);
+    }
+
+    public List<DtoReserva> buscarReservas() {
+        return reservaRepository
+                .findAll()
+                .stream()
+                .map(DtoReserva::new)
+                .toList();
     }
 }
