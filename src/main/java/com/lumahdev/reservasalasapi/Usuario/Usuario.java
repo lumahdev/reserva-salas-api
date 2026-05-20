@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table
 public class Usuario {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long usuarioId;
     private String nome;
     private String sobrenome;
@@ -33,7 +34,15 @@ public class Usuario {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getTelefone() {
         return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 }
