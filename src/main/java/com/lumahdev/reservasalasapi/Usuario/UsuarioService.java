@@ -40,8 +40,12 @@ public class UsuarioService {
 
     public Usuario editarUsuario(Long id, DtoEditarUsuario dto) {
         Usuario usuario = buscarUsuario(id);
-        usuario.setEmail(dto.email());
-        usuario.setTelefone(dto.telefone());
+        if(dto.email() != null){
+            usuario.setEmail(dto.email());
+        }
+        if(dto.telefone() != null ){
+            usuario.setTelefone(dto.telefone());
+        }
         return repository.save(usuario);
     }
 }
