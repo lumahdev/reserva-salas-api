@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UsuarioControllerTest {
+class UsuarioTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -24,15 +24,13 @@ class UsuarioControllerTest {
     @Autowired
     private UsuarioRepository repository;
 
+    private Usuario cadastraUsuario() {
+        return repository.save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982")));
+    }
+
     @BeforeEach
     void limparBanco() {
         repository.deleteAll();
-    }
-
-    private Long cadastraUsuarioRetornaId() {
-        return repository
-                .save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982")))
-                .getUsuarioId();
     }
 
     @Test
@@ -101,8 +99,59 @@ class UsuarioControllerTest {
     }
 
     @Test
+    void cadastro400TelefoneDuplicado() throws Exception {
+        cadastraUsuario();
+        mockMvc.perform(post("/usuarios")
+                        .content("""
+                            {
+                                "nome": "José",
+                                "sobrenome": "Bezerra",
+                                "email": "joseemail2@email.com",
+                                "telefone": "11987590982"
+                            }
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Já existe um usuário cadastrado com estes dados."));
+    }
+
+    @Test
+    void cadastro400EmailDuplicado() throws Exception {
+        cadastraUsuario();
+        mockMvc.perform(post("/usuarios")
+                        .content("""
+                            {
+                                "nome": "José",
+                                "sobrenome": "Bezerra",
+                                "email": "jose@email.com",
+                                "telefone": "11999999999"
+                            }
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Já existe um usuário cadastrado com estes dados."));
+    }
+
+    @Test
+    void cadastro400AmbosDuplicados() throws Exception {
+        cadastraUsuario();
+        mockMvc.perform(post("/usuarios")
+                        .content("""
+                            {
+                                "nome": "José",
+                                "sobrenome": "Bezerra",
+                                "email": "jose@email.com",
+                                "telefone": "11987590982"
+                            }
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Já existe um usuário cadastrado com estes dados."));
+    }
+
+    @Test
     void listar200() throws Exception {
-        Long id = cadastraUsuarioRetornaId();
+        Long id = cadastraUsuario().getUsuarioId();
         mockMvc.perform(get("/usuarios"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(id))
@@ -114,7 +163,8 @@ class UsuarioControllerTest {
 
     @Test
     void listar200PorId() throws Exception {
-        mockMvc.perform(get("/usuarios/" + cadastraUsuarioRetornaId()))
+        Long id = cadastraUsuario().getUsuarioId();
+        mockMvc.perform(get("/usuarios/" + id))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.nome").value("José"))
@@ -124,8 +174,66 @@ class UsuarioControllerTest {
     }
 
     @Test
+    void listar404() throws Exception {
+        mockMvc.perform(get("/usuarios/99999"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Não existe um usuário com este ID."));
+    }
+
+    @Test
+    void editar200Email() throws Exception {
+        Long id = cadastraUsuario().getUsuarioId();
+        mockMvc.perform(put("/usuarios/" + id)
+                        .content("""
+                            {"email": "joseemail2@email.com"}
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.nome").value("José"))
+                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
+                .andExpect(jsonPath("$.email").value("joseemail2@email.com"))
+                .andExpect(jsonPath("$.telefone").value("11987590982"));;
+    }
+
+    @Test
+    void editar200Telefone() throws Exception {
+        Long id = cadastraUsuario().getUsuarioId();
+        mockMvc.perform(put("/usuarios/" + id)
+                        .content("""
+                                {"telefone": "11999999999"}
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.nome").value("José"))
+                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
+                .andExpect(jsonPath("$.email").value("jose@email.com"))
+                .andExpect(jsonPath("$.telefone").value("11999999999"));;
+    }
+
+    @Test
+    void editar200Ambos() throws Exception {
+        Long id = cadastraUsuario().getUsuarioId();
+        mockMvc.perform(put("/usuarios/" + id)
+                        .content("""
+                            {
+                                "email": "joseemail2@email.com",
+                                "telefone": "11999999999"
+                            }
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.nome").value("José"))
+                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
+                .andExpect(jsonPath("$.email").value("joseemail2@email.com"))
+                .andExpect(jsonPath("$.telefone").value("11999999999"));;
+    }
+
+    @Test
     void editar400CorpoVazio() throws Exception {
-        Long id = cadastraUsuarioRetornaId();
+        Long id = cadastraUsuario().getUsuarioId();
         mockMvc.perform(put("/usuarios/" + id)
                         .content("")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -136,7 +244,7 @@ class UsuarioControllerTest {
 
     @Test
     void editar400Invalidos() throws Exception {
-        Long id = cadastraUsuarioRetornaId();
+        Long id = cadastraUsuario().getUsuarioId();
         mockMvc.perform(put("/usuarios/" + id)
                         .content("""
                             {
@@ -152,34 +260,13 @@ class UsuarioControllerTest {
     }
 
     @Test
-    void editar200TrocarApenasEmail() throws Exception {
-        Long id = cadastraUsuarioRetornaId();
-        mockMvc.perform(put("/usuarios/" + id)
+    void editar404() throws Exception {
+        mockMvc.perform(put("/usuarios/99999")
                         .content("""
                             {"email": "joseemail2@email.com"}
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("José"))
-                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
-                .andExpect(jsonPath("$.email").value("joseemail2@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11987590982"));;
-    }
-
-    @Test
-    void editar200TrocarApenasTelefone() throws Exception {
-        Long id = cadastraUsuarioRetornaId();
-        mockMvc.perform(put("/usuarios/" + id)
-                        .content("""
-                                {"telefone": "11999999999"}
-                        """)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("José"))
-                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
-                .andExpect(jsonPath("$.email").value("jose@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11999999999"));;
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Não existe um usuário com este ID."));
     }
 }
