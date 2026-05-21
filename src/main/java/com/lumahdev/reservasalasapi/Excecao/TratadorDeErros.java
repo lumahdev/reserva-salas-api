@@ -1,6 +1,7 @@
 package com.lumahdev.reservasalasapi.Excecao;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -32,5 +33,12 @@ public class TratadorDeErros {
                 );
 
         return ResponseEntity.badRequest().body(erros);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<DtoErro> tratarBodyVazio(HttpMessageNotReadableException e) {
+        return ResponseEntity
+                .badRequest()
+                .body(new DtoErro("Corpo da requisição é obrigatório."));
     }
 }
