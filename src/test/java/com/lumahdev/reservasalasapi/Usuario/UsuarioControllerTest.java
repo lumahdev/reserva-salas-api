@@ -35,56 +35,17 @@ class UsuarioControllerTest {
                 .getUsuarioId();
     }
 
-    private String cadastro200 = """
-        {
-                "nome": "José",
-                "sobrenome": "Bezerra",
-                "email": "jose@email.com",
-                "telefone": "11987590982"
-        }
-    """;
-
-    private String cadastro400BrancosOuNulos = """
-        {
-                "nome": "",
-                "sobrenome": "",
-                "email": "",
-                "telefone": ""
-        }
-    """;
-
-    private String cadastro400Invalidos = """
-        {
-                "nome": "teste",
-                "sobrenome": "teste",
-                "email": "teste",
-                "telefone": "teste"
-        }
-    """;
-
-    private String editar400Invalidos = """
-        {
-                "email": "teste",
-                "telefone": "teste"
-        }
-    """;
-
-    private String editar200ApenasEmail = """
-        {
-                "email": "joseemail2@email.com"
-        }
-    """;
-
-    private String editar200ApenasTelefone = """
-        {
-                "telefone": "11999999999"
-        }
-    """;
-
     @Test
     void cadastro200() throws Exception {
         mockMvc.perform(post("/usuarios")
-                        .content(cadastro200)
+                        .content("""
+                            {
+                                "nome": "José",
+                                "sobrenome": "Bezerra",
+                                "email": "jose@email.com",
+                                "telefone": "11987590982"
+                            }
+                        """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -106,7 +67,14 @@ class UsuarioControllerTest {
     @Test
     void cadastro400BrancosOuNulos() throws Exception {
         mockMvc.perform(post("/usuarios")
-                        .content(cadastro400BrancosOuNulos)
+                        .content("""
+                            {
+                                "nome": "",
+                                "sobrenome": "",
+                                "email": "",
+                                "telefone": ""
+                            }
+                        """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.nome").value("Nome é obrigatório."))
@@ -118,7 +86,14 @@ class UsuarioControllerTest {
     @Test
     void cadastro400Invalidos() throws Exception {
         mockMvc.perform(post("/usuarios")
-                        .content(cadastro400Invalidos)
+                        .content("""
+                            {
+                                "nome": "teste",
+                                "sobrenome": "teste",
+                                "email": "teste",
+                                "telefone": "teste"
+                            }
+                        """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.email").value("E-mail inválido."))
@@ -163,7 +138,12 @@ class UsuarioControllerTest {
     void editar400Invalidos() throws Exception {
         Long id = cadastraUsuarioRetornaId();
         mockMvc.perform(put("/usuarios/" + id)
-                        .content(editar400Invalidos)
+                        .content("""
+                            {
+                                "email": "teste",
+                                "telefone": "teste"
+                            }
+                        """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.email").value("E-mail inválido."))
@@ -175,30 +155,31 @@ class UsuarioControllerTest {
     void editar200TrocarApenasEmail() throws Exception {
         Long id = cadastraUsuarioRetornaId();
         mockMvc.perform(put("/usuarios/" + id)
-                        .content(editar200ApenasEmail)
+                        .content("""
+                            {"email": "joseemail2@email.com"}
+                        """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.nome").value("José"))
                 .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
                 .andExpect(jsonPath("$.email").value("joseemail2@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11987590982"));
-        ;
+                .andExpect(jsonPath("$.telefone").value("11987590982"));;
     }
 
     @Test
     void editar200TrocarApenasTelefone() throws Exception {
         Long id = cadastraUsuarioRetornaId();
         mockMvc.perform(put("/usuarios/" + id)
-                        .content(editar200ApenasTelefone)
+                        .content("""
+                                {"telefone": "11999999999"}
+                        """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.nome").value("José"))
                 .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
                 .andExpect(jsonPath("$.email").value("jose@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11999999999"));
-        ;
+                .andExpect(jsonPath("$.telefone").value("11999999999"));;
     }
-
 }
