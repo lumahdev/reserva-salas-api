@@ -43,4 +43,23 @@ class UsuarioControllerTest {
                 .andExpect(jsonPath("$.email").value("joao@email.com"))
                 .andExpect(jsonPath("$.telefone").value("11999991111"));
     }
+
+    @Test
+    @DisplayName("400 quando dados brancos/nulos")
+    void cadastrarUsuarioComErros() throws Exception {
+        DtoCadastroUsuario dtoCadastro = new DtoCadastroUsuario("", "", "", "");
+        Usuario usuarioSalvo = new Usuario(dtoCadastro);
+
+        Mockito.when(service.cadastrarUsuario(Mockito.any(DtoCadastroUsuario.class)))
+                .thenReturn(usuarioSalvo);
+
+        mockMvc.perform(post("/usuarios")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dtoCadastro)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.nome").value("Nome é obrigatório."))
+                .andExpect(jsonPath("$.sobrenome").value("Sobrenome é obrigatório."))
+                .andExpect(jsonPath("$.email").value("E-mail é obrigatório."))
+                .andExpect(jsonPath("$.telefone").value("Telefone é obrigatório."));
+    }
 }
