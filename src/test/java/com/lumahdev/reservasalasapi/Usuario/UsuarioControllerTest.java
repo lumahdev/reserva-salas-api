@@ -1,5 +1,6 @@
 package com.lumahdev.reservasalasapi.Usuario;
 
+import com.lumahdev.reservasalasapi.Excecao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -25,18 +26,17 @@ class UsuarioControllerTest {
     @MockitoBean
     private UsuarioService service;
 
+    private Usuario usuarioValido = new Usuario(new DtoCadastroUsuario("João", "Silva", "joao@email.com", "11999991111"));
+    private Usuario usuarioComBrancosOuNulos = new Usuario(new DtoCadastroUsuario("", "", "", ""));
+    private Usuario usuarioComInformacoesInvalidas = new Usuario(new DtoCadastroUsuario("João", "Silva", "teste", "abc"));
+
     @Test
     @DisplayName("200 quando dados válidos")
-    void cadastrarUsuarioComSucesso() throws Exception {
-        DtoCadastroUsuario dtoCadastro = new DtoCadastroUsuario("João", "Silva", "joao@email.com", "11999991111");
-        Usuario usuarioSalvo = new Usuario(dtoCadastro);
-
+    void cadastrarComSucesso() throws Exception {
+        Usuario usuario = usuarioValido;
         Mockito.when(service.cadastrarUsuario(Mockito.any(DtoCadastroUsuario.class)))
-                .thenReturn(usuarioSalvo);
-
-        mockMvc.perform(post("/usuarios")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dtoCadastro)))
+                .thenReturn(usuario);
+        mockMvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(usuario)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("João"))
                 .andExpect(jsonPath("$.sobrenome").value("Silva"))
@@ -46,20 +46,37 @@ class UsuarioControllerTest {
 
     @Test
     @DisplayName("400 quando dados brancos/nulos")
-    void cadastrarUsuarioComErros() throws Exception {
-        DtoCadastroUsuario dtoCadastro = new DtoCadastroUsuario("", "", "", "");
-        Usuario usuarioSalvo = new Usuario(dtoCadastro);
-
+    void cadastrarComBrancosOuNulos() throws Exception {
+        Usuario usuario = usuarioComBrancosOuNulos;
         Mockito.when(service.cadastrarUsuario(Mockito.any(DtoCadastroUsuario.class)))
-                .thenReturn(usuarioSalvo);
-
-        mockMvc.perform(post("/usuarios")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dtoCadastro)))
+                .thenReturn(usuario);
+        mockMvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(usuario)))
                 .andExpect(status().is4xxClientError())
                 .andExpect(jsonPath("$.nome").value("Nome é obrigatório."))
                 .andExpect(jsonPath("$.sobrenome").value("Sobrenome é obrigatório."))
                 .andExpect(jsonPath("$.email").value("E-mail é obrigatório."))
                 .andExpect(jsonPath("$.telefone").value("Telefone é obrigatório."));
+    }
+
+    @Test
+    @DisplayName("400 quando email OU telefone inválidos")
+    void cadastrarComInformacoesInvalidas() throws Exception {
+        Usuario usuario = usuarioComInformacoesInvalidas;
+        Mockito.when(service.cadastrarUsuario(Mockito.any(DtoCadastroUsuario.class)))
+                .thenReturn(usuario);
+        mockMvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(usuario)))
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$.email").value("E-mail inválido."))
+                .andExpect(jsonPath("$.telefone").value("Telefone inválido."));
+    }
+
+    @Test
+    @DisplayName("400 quando telefone OU email ja cadastrados")
+    void cadastrarComInformacoesJaExistentes() throws Exception {
+        Usuario usuario = usuarioValido;
+        Mockito.when(service.cadastrarUsuario(Mockito.any(DtoCadastroUsuario.class)))
+                .thenThrow(new Excecao("Já existe um usuário cadastrado com estes dados."));
+        mockMvc.perform(post("/usuarios").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(usuario)))
+                .andExpect(status().is4xxClientError());
     }
 }
