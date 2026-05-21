@@ -18,8 +18,7 @@ public class UsuarioService {
     }
 
     public Usuario cadastrarUsuario(DtoCadastroUsuario dto) {
-        String telefone = normalizarTelefone(dto.telefone());
-        if (repository.existsByTelefoneOrEmail(telefone, dto.email())) {
+        if (repository.existsByTelefoneOrEmail(dto.telefone(), dto.email())) {
             throw new Excecao("Já existe um usuário cadastrado com estes dados.", HttpStatus.BAD_REQUEST);
         }
         return repository.save(new Usuario(dto));
