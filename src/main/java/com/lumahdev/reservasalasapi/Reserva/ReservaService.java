@@ -23,19 +23,11 @@ public class ReservaService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    private boolean salaExiste(Long id){
-        return salaRepository.existsById(id);
-    }
-
-    private boolean usuarioExiste(Long id){
-        return usuarioRepository.existsById(id);
-    }
-
     public Reserva cadastrarReserva(DtoCadastroReserva dto) {
-        if (!salaExiste(dto.salaId())) {
+        if (!salaRepository.existsById(dto.salaId())) {
             throw new Excecao("Não existe uma sala com este ID.");
         }
-        if (!usuarioExiste(dto.usuarioId())) {
+        if (!usuarioRepository.existsById(dto.usuarioId())) {
             throw new Excecao("Não existe um usuário com este ID.");
         }
         if (dto.dataFim().isBefore(dto.dataInicio())) {
@@ -66,14 +58,11 @@ public class ReservaService {
     public Reserva buscarReserva(Long id) {
         return reservaRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new Excecao("Não existe uma reserva com este ID."));
     }
 
     public Reserva mudarDisponibilidadeReserva(Long id) {
         Reserva reserva = buscarReserva(id);
-        if(reserva == null){
-            throw new Excecao("Não existe uma reserva com este ID");
-        }
         if(reserva.getStatus() == ReservaStatusEnum.ATIVA) {
             reserva.setStatus(ReservaStatusEnum.CANCELADA);
         } else {

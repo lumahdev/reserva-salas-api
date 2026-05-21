@@ -14,12 +14,8 @@ public class SalaService {
     @Autowired
     private SalaRepository repository;
 
-    private boolean checarSalaUnica(String nome) {
-        return repository.existsByNome(nome);
-    }
-
     public Sala cadastrarSala(DtoCadastroSala dto) {
-        if(checarSalaUnica(dto.nome())) {
+        if(repository.existsByNome(dto.nome())) {
             throw new Excecao("Já existe uma sala cadastrada com estes dados.");
         }
         return repository.save(new Sala(dto));
@@ -36,14 +32,11 @@ public class SalaService {
     public Sala buscarSala(Long id) {
         return repository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new Excecao("Não existe uma sala com este ID."));
     }
 
     public Sala mudarDisponibilidadeSala(Long id) {
         Sala sala = buscarSala(id);
-        if(sala == null){
-            throw new Excecao("Não existe uma sala com este ID");
-        }
         if(sala.getStatus() == SalaStatusEnum.DISPONIVEL) {
             sala.setStatus(SalaStatusEnum.INDISPONIVEL);
         } else {

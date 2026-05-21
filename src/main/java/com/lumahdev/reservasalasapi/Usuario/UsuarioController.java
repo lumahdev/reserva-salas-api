@@ -29,11 +29,7 @@ public class UsuarioController {
     @GetMapping("/usuarios/{id}")
     public ResponseEntity<DtoUsuario> listarUsuario(@PathVariable Long id) {
         Usuario usuario = service.buscarUsuario(id);
-        if (usuario == null) {
-            throw new Excecao("Não existe um usuário com este ID.");
-        } else {
-            return ResponseEntity.ok(new DtoUsuario(usuario));
-        }
+        return ResponseEntity.ok(new DtoUsuario(usuario));
     }
 
     @PutMapping("/usuarios/{id}")
