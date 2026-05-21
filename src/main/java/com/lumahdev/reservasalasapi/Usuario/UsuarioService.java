@@ -1,7 +1,8 @@
 package com.lumahdev.reservasalasapi.Usuario;
 
-import com.lumahdev.reservasalasapi.Excecao;
+import com.lumahdev.reservasalasapi.Excecao.Excecao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class UsuarioService {
 
     public Usuario cadastrarUsuario(DtoCadastroUsuario dto) {
         if (repository.existsByTelefoneOrEmail(dto.telefone(), dto.email())) {
-            throw new Excecao("Já existe um usuário cadastrado com estes dados.");
+            throw new Excecao("Já existe um usuário cadastrado com estes dados.", HttpStatus.BAD_REQUEST);
         }
         return repository.save(new Usuario(dto));
     }
@@ -30,7 +31,7 @@ public class UsuarioService {
     public Usuario buscarUsuario(Long id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new Excecao("Não existe um usuário com este ID."));
+                .orElseThrow(() -> new Excecao("Não existe um usuário com este ID.", HttpStatus.NOT_FOUND));
     }
 
     public Usuario editarUsuario(Long id, DtoEditarUsuario dto) {

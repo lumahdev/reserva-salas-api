@@ -1,12 +1,10 @@
 package com.lumahdev.reservasalasapi.Reserva;
 
-import com.lumahdev.reservasalasapi.Excecao;
-import com.lumahdev.reservasalasapi.Sala.DtoSala;
-import com.lumahdev.reservasalasapi.Sala.Sala;
+import com.lumahdev.reservasalasapi.Excecao.Excecao;
 import com.lumahdev.reservasalasapi.Sala.SalaRepository;
-import com.lumahdev.reservasalasapi.Sala.SalaStatusEnum;
 import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,13 +23,13 @@ public class ReservaService {
 
     public Reserva cadastrarReserva(DtoCadastroReserva dto) {
         if (!salaRepository.existsById(dto.salaId())) {
-            throw new Excecao("Não existe uma sala com este ID.");
+            throw new Excecao("Não existe uma sala com este ID.", HttpStatus.NOT_FOUND);
         }
         if (!usuarioRepository.existsById(dto.usuarioId())) {
-            throw new Excecao("Não existe um usuário com este ID.");
+            throw new Excecao("Não existe um usuário com este ID.", HttpStatus.NOT_FOUND);
         }
         if (dto.dataFim().isBefore(dto.dataInicio())) {
-            throw new Excecao("Data final não pode ser anterior à data inicial.");
+            throw new Excecao("Data final não pode ser anterior à data inicial.", HttpStatus.BAD_REQUEST);
         }
         boolean salaOcupada = reservaRepository
                 .existsBySalaIdAndStatusAndDataInicioLessThanEqualAndDataFimGreaterThanEqual(
@@ -41,7 +39,7 @@ public class ReservaService {
                     dto.dataInicio()
                 );
         if (salaOcupada) {
-            throw new Excecao("Já existe uma reserva para esta sala no período especificado.");
+            throw new Excecao("Já existe uma reserva para esta sala no período especificado.", HttpStatus.BAD_REQUEST);
         }
         Reserva reserva = new Reserva(dto);
         return reservaRepository.save(reserva);
@@ -58,7 +56,7 @@ public class ReservaService {
     public Reserva buscarReserva(Long id) {
         return reservaRepository
                 .findById(id)
-                .orElseThrow(() -> new Excecao("Não existe uma reserva com este ID."));
+                .orElseThrow(() -> new Excecao("Não existe uma reserva com este ID.", HttpStatus.NOT_FOUND));
     }
 
     public Reserva mudarDisponibilidadeReserva(Long id) {

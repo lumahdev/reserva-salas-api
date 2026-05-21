@@ -1,9 +1,5 @@
 package com.lumahdev.reservasalasapi.Sala;
 
-import com.lumahdev.reservasalasapi.Excecao;
-import com.lumahdev.reservasalasapi.Usuario.DtoEditarUsuario;
-import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
-import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

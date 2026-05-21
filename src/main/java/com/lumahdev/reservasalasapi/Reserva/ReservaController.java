@@ -1,8 +1,5 @@
 package com.lumahdev.reservasalasapi.Reserva;
 
-import com.lumahdev.reservasalasapi.Excecao;
-import com.lumahdev.reservasalasapi.Sala.DtoSala;
-import com.lumahdev.reservasalasapi.Sala.Sala;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +28,7 @@ public class ReservaController {
     @GetMapping("/reservas/{id}")
     public ResponseEntity<DtoReserva> listarReserva(@PathVariable Long id) {
         Reserva reserva = service.buscarReserva(id);
-        if (reserva == null) {
-            throw new Excecao("Não existe uma reserva com este ID.");
-        } else {
-            return ResponseEntity.ok(new DtoReserva(reserva));
-        }
+        return ResponseEntity.ok(new DtoReserva(reserva));
     }
 
     @PutMapping("/reservas/{id}")

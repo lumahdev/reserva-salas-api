@@ -1,10 +1,8 @@
 package com.lumahdev.reservasalasapi.Sala;
 
-import com.lumahdev.reservasalasapi.Excecao;
-import com.lumahdev.reservasalasapi.Usuario.DtoEditarUsuario;
-import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
-import com.lumahdev.reservasalasapi.Usuario.Usuario;
+import com.lumahdev.reservasalasapi.Excecao.Excecao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +14,7 @@ public class SalaService {
 
     public Sala cadastrarSala(DtoCadastroSala dto) {
         if(repository.existsByNome(dto.nome())) {
-            throw new Excecao("Já existe uma sala cadastrada com estes dados.");
+            throw new Excecao("Já existe uma sala cadastrada com estes dados.", HttpStatus.BAD_REQUEST);
         }
         return repository.save(new Sala(dto));
     }
@@ -32,7 +30,7 @@ public class SalaService {
     public Sala buscarSala(Long id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new Excecao("Não existe uma sala com este ID."));
+                .orElseThrow(() -> new Excecao("Não existe uma sala com este ID.", HttpStatus.NOT_FOUND));
     }
 
     public Sala mudarDisponibilidadeSala(Long id) {
