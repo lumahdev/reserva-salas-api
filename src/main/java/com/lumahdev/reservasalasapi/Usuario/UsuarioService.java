@@ -13,8 +13,13 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository repository;
 
+    private String normalizarTelefone(String telefone) {
+        return telefone.replaceAll("\\D", "");
+    }
+
     public Usuario cadastrarUsuario(DtoCadastroUsuario dto) {
-        if (repository.existsByTelefoneOrEmail(dto.telefone(), dto.email())) {
+        String telefone = normalizarTelefone(dto.telefone());
+        if (repository.existsByTelefoneOrEmail(telefone, dto.email())) {
             throw new Excecao("Já existe um usuário cadastrado com estes dados.", HttpStatus.BAD_REQUEST);
         }
         return repository.save(new Usuario(dto));
