@@ -201,7 +201,7 @@ class UsuarioTest {
         Long id = cadastraUsuario().getUsuarioId();
         mockMvc.perform(put("/usuarios/" + id)
                         .content("""
-                                {"telefone": "11999999999"}
+                            {"telefone": "11999999999"}
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
