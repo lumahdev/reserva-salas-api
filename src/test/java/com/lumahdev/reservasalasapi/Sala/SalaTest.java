@@ -133,28 +133,29 @@ class SalaTest {
 
     @Test
     void listar200() throws Exception {
-        Long id = cadastraSala().getSalaId();
+        Sala sala = cadastraSala();
         mockMvc.perform(get("/salas"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(id))
-                .andExpect(jsonPath("$[0].nome").value("101"))
-                .andExpect(jsonPath("$[0].capacidade").value(50))
-                .andExpect(jsonPath("$[0].andar").value("1"))
-                .andExpect(jsonPath("$[0].bloco").value("Orquídeas"))
-                .andExpect(jsonPath("$[0].status").value("DISPONIVEL"));
+                .andExpect(jsonPath("$[0].id").value(sala.getSalaId()))
+                .andExpect(jsonPath("$[0].nome").value(sala.getNome()))
+                .andExpect(jsonPath("$[0].capacidade").value(sala.getCapacidade()))
+                .andExpect(jsonPath("$[0].andar").value(sala.getAndar()))
+                .andExpect(jsonPath("$[0].bloco").value(sala.getBloco()))
+                .andExpect(jsonPath("$[0].status").value(sala.getStatus()));
     }
 
     @Test
     void listar200PorId() throws Exception {
-        Long id = cadastraSala().getSalaId();
-        mockMvc.perform(get("/salas/" + id))
+        Sala sala = cadastraSala();
+        Long salaId = sala.getSalaId();
+        mockMvc.perform(get("/salas/" + salaId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("101"))
-                .andExpect(jsonPath("$.capacidade").value(50))
-                .andExpect(jsonPath("$.andar").value("1"))
-                .andExpect(jsonPath("$.bloco").value("Orquídeas"))
-                .andExpect(jsonPath("$.status").value("DISPONIVEL"));
+                .andExpect(jsonPath("$.id").value(salaId))
+                .andExpect(jsonPath("$.nome").value(sala.getNome()))
+                .andExpect(jsonPath("$.capacidade").value(sala.getCapacidade()))
+                .andExpect(jsonPath("$.andar").value(sala.getAndar()))
+                .andExpect(jsonPath("$.bloco").value(sala.getBloco()))
+                .andExpect(jsonPath("$.status").value(sala.getStatus()));
     }
 
     @Test
@@ -166,14 +167,21 @@ class SalaTest {
 
     @Test
     void editar200DisponivelParaIndisponivel() throws Exception {
-        Long id = cadastraSala().getSalaId();
-        mockMvc.perform(put("/salas/" + id))
+        Sala sala = cadastraSala();
+        mockMvc.perform(put("/salas/" + sala.getSalaId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("101"))
-                .andExpect(jsonPath("$.capacidade").value(50))
-                .andExpect(jsonPath("$.andar").value("1"))
-                .andExpect(jsonPath("$.bloco").value("Orquídeas"))
+                .andExpect(jsonPath("$.id").value(sala.getSalaId()))
+                .andExpect(jsonPath("$.nome").value(sala.getNome()))
+                .andExpect(jsonPath("$.capacidade").value(sala.getCapacidade()))
+                .andExpect(jsonPath("$.andar").value(sala.getAndar()))
+                .andExpect(jsonPath("$.bloco").value(sala.getBloco()))
                 .andExpect(jsonPath("$.status").value("INDISPONIVEL"));
+    }
+
+    @Test
+    void editar404() throws Exception {
+        mockMvc.perform(put("/salas/99999"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Não existe uma sala com este ID."));
     }
 }

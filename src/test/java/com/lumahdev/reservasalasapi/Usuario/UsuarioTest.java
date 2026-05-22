@@ -151,26 +151,27 @@ class UsuarioTest {
 
     @Test
     void listar200() throws Exception {
-        Long id = cadastraUsuario().getUsuarioId();
+        Usuario usuario = cadastraUsuario();
         mockMvc.perform(get("/usuarios"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(id))
-                .andExpect(jsonPath("$[0].nome").value("José"))
-                .andExpect(jsonPath("$[0].sobrenome").value("Bezerra"))
-                .andExpect(jsonPath("$[0].telefone").value("11987590982"))
-                .andExpect(jsonPath("$[0].email").value("jose@email.com"));
+                .andExpect(jsonPath("$[0].id").value(usuario.getUsuarioId()))
+                .andExpect(jsonPath("$[0].nome").value(usuario.getNome()))
+                .andExpect(jsonPath("$[0].sobrenome").value(usuario.getSobrenome()))
+                .andExpect(jsonPath("$[0].telefone").value(usuario.getTelefone()))
+                .andExpect(jsonPath("$[0].email").value(usuario.getEmail()));
     }
 
     @Test
     void listar200PorId() throws Exception {
-        Long id = cadastraUsuario().getUsuarioId();
+        Usuario usuario = cadastraUsuario();
+        Long id = usuario.getUsuarioId();
         mockMvc.perform(get("/usuarios/" + id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("José"))
-                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
-                .andExpect(jsonPath("$.email").value("jose@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11987590982"));
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
+                .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
+                .andExpect(jsonPath("$.telefone").value(usuario.getTelefone()))
+                .andExpect(jsonPath("$.email").value(usuario.getEmail()));
     }
 
     @Test
@@ -182,39 +183,42 @@ class UsuarioTest {
 
     @Test
     void editar200Email() throws Exception {
-        Long id = cadastraUsuario().getUsuarioId();
+        Usuario usuario = cadastraUsuario();
+        Long id = usuario.getUsuarioId();
         mockMvc.perform(put("/usuarios/" + id)
                         .content("""
                             {"email": "joseemail2@email.com"}
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("José"))
-                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
-                .andExpect(jsonPath("$.email").value("joseemail2@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11987590982"));;
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
+                .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
+                .andExpect(jsonPath("$.telefone").value(usuario.getTelefone()))
+                .andExpect(jsonPath("$.email").value("joseemail2@email.com"));
     }
 
     @Test
     void editar200Telefone() throws Exception {
-        Long id = cadastraUsuario().getUsuarioId();
+        Usuario usuario = cadastraUsuario();
+        Long id = usuario.getUsuarioId();
         mockMvc.perform(put("/usuarios/" + id)
                         .content("""
                             {"telefone": "11999999999"}
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("José"))
-                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
-                .andExpect(jsonPath("$.email").value("jose@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11999999999"));;
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
+                .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
+                .andExpect(jsonPath("$.telefone").value("11999999999"))
+                .andExpect(jsonPath("$.email").value(usuario.getEmail()));
     }
 
     @Test
     void editar200Ambos() throws Exception {
-        Long id = cadastraUsuario().getUsuarioId();
+        Usuario usuario = cadastraUsuario();
+        Long id = usuario.getUsuarioId();
         mockMvc.perform(put("/usuarios/" + id)
                         .content("""
                             {
@@ -224,11 +228,11 @@ class UsuarioTest {
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("José"))
-                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
-                .andExpect(jsonPath("$.email").value("joseemail2@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11999999999"));;
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
+                .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
+                .andExpect(jsonPath("$.telefone").value("11999999999"))
+                .andExpect(jsonPath("$.email").value("joseemail2@email.com"));
     }
 
     @Test
