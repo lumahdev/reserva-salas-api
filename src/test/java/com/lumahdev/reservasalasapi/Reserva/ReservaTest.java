@@ -222,11 +222,11 @@ public class ReservaTest {
         mockMvc.perform(get("/reservas"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(reserva.getReservaId()))
-                .andExpect(jsonPath("$[0].dataInicio").value(reserva.getDataInicio()))
-                .andExpect(jsonPath("$[0].dataFim").value(reserva.getDataFim()))
+                .andExpect(jsonPath("$[0].dataInicio").value(reserva.getDataInicio().toString()))
+                .andExpect(jsonPath("$[0].dataFim").value(reserva.getDataFim().toString()))
                 .andExpect(jsonPath("$[0].salaId").value(usuarioId))
                 .andExpect(jsonPath("$[0].usuarioId").value(salaId))
-                .andExpect(jsonPath("$[0].status").value(reserva.getStatus()));
+                .andExpect(jsonPath("$[0].status").value(reserva.getStatus().name()));
     }
 
     @Test
@@ -238,11 +238,11 @@ public class ReservaTest {
         mockMvc.perform(get("/reservas/" + reservaId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(reservaId))
-                .andExpect(jsonPath("$.dataInicio").value(reserva.getDataInicio()))
-                .andExpect(jsonPath("$.dataFim").value(reserva.getDataFim()))
+                .andExpect(jsonPath("$.dataInicio").value(reserva.getDataInicio().toString()))
+                .andExpect(jsonPath("$.dataFim").value(reserva.getDataFim().toString()))
                 .andExpect(jsonPath("$.salaId").value(usuarioId))
                 .andExpect(jsonPath("$.usuarioId").value(salaId))
-                .andExpect(jsonPath("$.status").value(reserva.getStatus()));
+                .andExpect(jsonPath("$.status").value(reserva.getStatus().name()));
     }
 
     @Test
@@ -261,11 +261,11 @@ public class ReservaTest {
         mockMvc.perform(put("/reservas/" + reservaId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(reservaId))
-                .andExpect(jsonPath("$.dataInicio").value(reserva.getDataInicio()))
-                .andExpect(jsonPath("$.dataFim").value(reserva.getDataFim()))
+                .andExpect(jsonPath("$.dataInicio").value(reserva.getDataInicio().toString()))
+                .andExpect(jsonPath("$.dataFim").value(reserva.getDataFim().toString()))
                 .andExpect(jsonPath("$.salaId").value(usuarioId))
                 .andExpect(jsonPath("$.usuarioId").value(salaId))
-                .andExpect(jsonPath("$.status").value("INDISPONIVEL"));
+                .andExpect(jsonPath("$.status").value("CANCELADA"));
     }
 
     @Test

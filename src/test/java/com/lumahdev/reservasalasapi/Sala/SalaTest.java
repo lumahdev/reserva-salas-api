@@ -141,7 +141,7 @@ class SalaTest {
                 .andExpect(jsonPath("$[0].capacidade").value(sala.getCapacidade()))
                 .andExpect(jsonPath("$[0].andar").value(sala.getAndar()))
                 .andExpect(jsonPath("$[0].bloco").value(sala.getBloco()))
-                .andExpect(jsonPath("$[0].status").value(sala.getStatus()));
+                .andExpect(jsonPath("$[0].status").value(sala.getStatus().name()));
     }
 
     @Test
@@ -155,7 +155,7 @@ class SalaTest {
                 .andExpect(jsonPath("$.capacidade").value(sala.getCapacidade()))
                 .andExpect(jsonPath("$.andar").value(sala.getAndar()))
                 .andExpect(jsonPath("$.bloco").value(sala.getBloco()))
-                .andExpect(jsonPath("$.status").value(sala.getStatus()));
+                .andExpect(jsonPath("$.status").value(sala.getStatus().name()));
     }
 
     @Test
@@ -168,9 +168,10 @@ class SalaTest {
     @Test
     void editar200DisponivelParaIndisponivel() throws Exception {
         Sala sala = cadastraSala();
-        mockMvc.perform(put("/salas/" + sala.getSalaId()))
+        Long salaId = sala.getSalaId();
+        mockMvc.perform(put("/salas/" + salaId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(sala.getSalaId()))
+                .andExpect(jsonPath("$.id").value(salaId))
                 .andExpect(jsonPath("$.nome").value(sala.getNome()))
                 .andExpect(jsonPath("$.capacidade").value(sala.getCapacidade()))
                 .andExpect(jsonPath("$.andar").value(sala.getAndar()))
