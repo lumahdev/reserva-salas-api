@@ -11,8 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -270,6 +270,21 @@ class UsuarioTest {
                             {"email": "joseemail2@email.com"}
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Não existe um usuário com este ID."));
+    }
+
+    @Test
+    void deletar200() throws Exception {
+        Long id = cadastraUsuario().getUsuarioId();
+        mockMvc.perform(delete("/usuarios/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Usuário deletado com sucesso."));
+    }
+
+    @Test
+    void deletar404() throws Exception {
+        mockMvc.perform(delete("/usuarios/99999"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Não existe um usuário com este ID."));
     }
