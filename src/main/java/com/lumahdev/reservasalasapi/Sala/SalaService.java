@@ -53,7 +53,7 @@ public class SalaService {
         Sala sala = buscarSala(id);
         if(sala != null) {
             repository.deleteById(id);
-//            reservaRepository.deleteAllBySalaId(id);
+            reservaRepository.deleteAllBySalaId(id);
         }
     }
 }
