@@ -154,11 +154,11 @@ class UsuarioTest {
         Usuario usuario = cadastraUsuario();
         mockMvc.perform(get("/usuarios"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(usuario.getUsuarioId()))
-                .andExpect(jsonPath("$[0].nome").value(usuario.getNome()))
-                .andExpect(jsonPath("$[0].sobrenome").value(usuario.getSobrenome()))
-                .andExpect(jsonPath("$[0].telefone").value(usuario.getTelefone()))
-                .andExpect(jsonPath("$[0].email").value(usuario.getEmail()));
+                .andExpect(jsonPath("$.content[0].id").value(usuario.getUsuarioId()))
+                .andExpect(jsonPath("$.content[0].nome").value(usuario.getNome()))
+                .andExpect(jsonPath("$.content[0].sobrenome").value(usuario.getSobrenome()))
+                .andExpect(jsonPath("$.content[0].telefone").value(usuario.getTelefone()))
+                .andExpect(jsonPath("$.content[0].email").value(usuario.getEmail()));
     }
 
     @Test

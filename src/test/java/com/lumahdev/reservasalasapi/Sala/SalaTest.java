@@ -134,12 +134,12 @@ class SalaTest {
         Sala sala = cadastraSala();
         mockMvc.perform(get("/salas"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(sala.getSalaId()))
-                .andExpect(jsonPath("$[0].nome").value(sala.getNome()))
-                .andExpect(jsonPath("$[0].capacidade").value(sala.getCapacidade()))
-                .andExpect(jsonPath("$[0].andar").value(sala.getAndar()))
-                .andExpect(jsonPath("$[0].bloco").value(sala.getBloco()))
-                .andExpect(jsonPath("$[0].status").value(sala.getStatus().name()));
+                .andExpect(jsonPath("$.content[0].id").value(sala.getSalaId()))
+                .andExpect(jsonPath("$.content[0].nome").value(sala.getNome()))
+                .andExpect(jsonPath("$.content[0].capacidade").value(sala.getCapacidade()))
+                .andExpect(jsonPath("$.content[0].andar").value(sala.getAndar()))
+                .andExpect(jsonPath("$.content[0].bloco").value(sala.getBloco()))
+                .andExpect(jsonPath("$.content[0].status").value(sala.getStatus().name()));
     }
 
     @Test

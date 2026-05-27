@@ -219,12 +219,12 @@ public class ReservaTest {
         Reserva reserva = cadastraReserva(salaId, usuarioId);
         mockMvc.perform(get("/reservas"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(reserva.getReservaId()))
-                .andExpect(jsonPath("$[0].dataInicio").value(reserva.getDataInicio().toString()))
-                .andExpect(jsonPath("$[0].dataFim").value(reserva.getDataFim().toString()))
-                .andExpect(jsonPath("$[0].salaId").value(usuarioId))
-                .andExpect(jsonPath("$[0].usuarioId").value(salaId))
-                .andExpect(jsonPath("$[0].status").value(reserva.getStatus().name()));
+                .andExpect(jsonPath("$.content[0].id").value(reserva.getReservaId()))
+                .andExpect(jsonPath("$.content[0].dataInicio").value(reserva.getDataInicio().toString()))
+                .andExpect(jsonPath("$.content[0].dataFim").value(reserva.getDataFim().toString()))
+                .andExpect(jsonPath("$.content[0].salaId").value(usuarioId))
+                .andExpect(jsonPath("$.content[0].usuarioId").value(salaId))
+                .andExpect(jsonPath("$.content[0].status").value(reserva.getStatus().name()));
     }
 
     @Test
@@ -258,12 +258,12 @@ public class ReservaTest {
         Long reservaId = reserva.getReservaId();
         mockMvc.perform(get("/reservas/usuarios/" + usuarioId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(reservaId))
-                .andExpect(jsonPath("$.dataInicio").value(reserva.getDataInicio().toString()))
-                .andExpect(jsonPath("$.dataFim").value(reserva.getDataFim().toString()))
-                .andExpect(jsonPath("$.salaId").value(usuarioId))
-                .andExpect(jsonPath("$.usuarioId").value(salaId))
-                .andExpect(jsonPath("$.status").value(reserva.getStatus().name()));
+                .andExpect(jsonPath("$.content[0].id").value(reservaId))
+                .andExpect(jsonPath("$.content[0].dataInicio").value(reserva.getDataInicio().toString()))
+                .andExpect(jsonPath("$.content[0].dataFim").value(reserva.getDataFim().toString()))
+                .andExpect(jsonPath("$.content[0].salaId").value(usuarioId))
+                .andExpect(jsonPath("$.content[0].usuarioId").value(salaId))
+                .andExpect(jsonPath("$.content[0].status").value(reserva.getStatus().name()));
     }
 
     @Test
@@ -281,12 +281,12 @@ public class ReservaTest {
         Long reservaId = reserva.getReservaId();
         mockMvc.perform(get("/reservas/salas/" + salaId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(reservaId))
-                .andExpect(jsonPath("$.dataInicio").value(reserva.getDataInicio().toString()))
-                .andExpect(jsonPath("$.dataFim").value(reserva.getDataFim().toString()))
-                .andExpect(jsonPath("$.salaId").value(usuarioId))
-                .andExpect(jsonPath("$.usuarioId").value(salaId))
-                .andExpect(jsonPath("$.status").value(reserva.getStatus().name()));
+                .andExpect(jsonPath("$.content[0].id").value(reservaId))
+                .andExpect(jsonPath("$.content[0].dataInicio").value(reserva.getDataInicio().toString()))
+                .andExpect(jsonPath("$.content[0].dataFim").value(reserva.getDataFim().toString()))
+                .andExpect(jsonPath("$.content[0].salaId").value(usuarioId))
+                .andExpect(jsonPath("$.content[0].usuarioId").value(salaId))
+                .andExpect(jsonPath("$.content[0].status").value(reserva.getStatus().name()));
     }
 
     @Test
