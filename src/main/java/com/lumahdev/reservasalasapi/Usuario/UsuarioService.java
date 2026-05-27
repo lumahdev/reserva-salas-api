@@ -44,4 +44,11 @@ public class UsuarioService {
         }
         return repository.save(usuario);
     }
+
+    public void deletarUsuario(Long id) {
+        Usuario usuario = buscarUsuario(id);
+        if(usuario != null) {
+            repository.deleteById(id);
+        }
+    }
 }

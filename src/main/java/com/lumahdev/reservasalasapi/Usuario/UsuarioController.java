@@ -36,4 +36,10 @@ public class UsuarioController {
         Usuario usuario = service.editarUsuario(id, dto);
         return ResponseEntity.ok(new DtoUsuario(usuario));
     }
+
+    @DeleteMapping("/usuarios/{id}")
+    public ResponseEntity<String> deletarUsuario(@PathVariable Long id) {
+        service.deletarUsuario(id);
+        return ResponseEntity.ok("Usuário deletado com sucesso.");
+    }
 }
