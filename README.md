@@ -42,7 +42,12 @@ Dados id e email e/ou telefone, atualiza a informação do usuário, caso ele ex
   "telefone": "11987590982"
 }
 ```
-### 5. Cadastrar sala
+
+### 5. Deletar usuário
+Dados id do usuário, o deleta do banco de dados, junto com suas reservas feitas.
+- **DELETE** `/usuarios/{id}`
+
+### 6. Cadastrar sala
 Dados nome, capacidade, andar e bloco, cadastra uma sala. Os dados não podem ser brancos ou nulos. Não é possível cadastrar uma sala com nome já existentes.
 - **POST** `/salas/`
 - **Corpo da requisição:**
@@ -55,19 +60,23 @@ Dados nome, capacidade, andar e bloco, cadastra uma sala. Os dados não podem se
 }
 ```
 
-### 6. Listar salas
+### 7. Listar salas
 Retorna todas as salas cadastradas.
 - **GET** `/salas/`
 
-### 7. Listar sala
+### 8. Listar sala
 Dado id, retorna as informações da sala, caso ela exista.
 - **GET** `/salas/{id}`
 
-### 8. Mudar disponibilidade da sala
+### 9. Mudar disponibilidade da sala
 Dados id, atualiza a disponibilidade da sala (disponível <-> indisponível), caso ele exista.
 - **PUT** `/salas/{id}`
 
-### 9. Cadastrar reserva
+### 10. Deletar sala
+Dado id, deleta a sala do banco de dados, junto com as reservas feitas nela.
+- **DELETE** `/salas/{id}`
+
+### 11. Cadastrar reserva
 Dados data inicial, data final, id do usuário e id do cliente, cadastra uma reserva. Os dados não podem ser brancos ou nulos, as datas devem ser futuras e não é possível com que a data final seja anterior à inicial. Não é possível realizar uma reserva quando usuário e salas são inexistentes ou já exista uma reserva para a data especificada.
 - **POST** `/reservas/`
 - **Corpo da requisição:**
@@ -80,14 +89,26 @@ Dados data inicial, data final, id do usuário e id do cliente, cadastra uma res
 }
 ```
 
-### 10. Listar reservas
+### 12. Listar reservas
 Retorna todas as reservas cadastradas.
 - **GET** `/reservas/`
 
-### 11. Listar reserva
+### 13. Listar reserva
 Dado id, retorna as informações da reserva, caso ela exista.
 - **GET** `/reservas/{id}`
 
-### 12. Mudar disponibilidade da reserva
+### 14. Listar reservas de um usuário
+Dado id, retorna as reservas feitas por um usuário.
+- **GET** `/reservas/usuarios/{id}`
+
+### 15. Listar reservas em uma sala
+Dado id, retorna as reservas feitas em uma sala.
+- **GET** `/reservas/salas/{id}`
+
+### 16. Mudar disponibilidade da reserva
 Dados id, atualiza a disponibilidade da reserva (ativa <-> cancelada), caso ele exista.
 - **PUT** `/reservas/{id}`
+
+### 17. Deletar reserva
+Dado id, deleta a reserva.
+- **DELETE** `/reservas/{id}`
