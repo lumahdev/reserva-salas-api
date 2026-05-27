@@ -5,6 +5,8 @@ import com.lumahdev.reservasalasapi.Sala.Sala;
 import com.lumahdev.reservasalasapi.Sala.SalaRepository;
 import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -46,12 +48,10 @@ public class ReservaService {
         return reservaRepository.save(reserva);
     }
 
-    public List<DtoReserva> buscarReservas() {
+    public Page<DtoReserva> buscarReservas(Pageable paginacao) {
         return reservaRepository
-                .findAll()
-                .stream()
-                .map(DtoReserva::new)
-                .toList();
+                .findAll(paginacao)
+                .map(DtoReserva::new);
     }
 
     public Reserva buscarReserva(Long id) {
@@ -60,20 +60,24 @@ public class ReservaService {
                 .orElseThrow(() -> new Excecao("Não existe uma reserva com este ID.", HttpStatus.NOT_FOUND));
     }
 
-    public Reserva buscarReservaPorUsuarioId(Long id) {
-        Reserva reserva =  reservaRepository.findByUsuarioId(id);
-        if(reserva == null) {
+    public Page<DtoReserva> buscarReservaPorUsuarioId(Long id, Pageable paginacao) {
+        Page<DtoReserva> reservas =  reservaRepository
+                .findAllByUsuarioId(id, paginacao)
+                .map(DtoReserva::new);
+        if(reservas.isEmpty()) {
             throw new Excecao("Não existe uma reserva com este ID de usuário.", HttpStatus.NOT_FOUND);
         }
-        return reserva;
+        return reservas;
     }
 
-    public Reserva buscarReservaPorSalaId(Long id) {
-        Reserva reserva =  reservaRepository.findBySalaId(id);
-        if(reserva == null) {
+    public Page<DtoReserva> buscarReservaPorSalaId(Long id, Pageable paginacao) {
+        Page<DtoReserva> reservas =  reservaRepository
+                .findAllBySalaId(id, paginacao)
+                .map(DtoReserva::new);
+        if(reservas.isEmpty()) {
             throw new Excecao("Não existe uma reserva com este ID de sala.", HttpStatus.NOT_FOUND);
         }
-        return reserva;
+        return reservas;
     }
 
     public Reserva mudarDisponibilidadeReserva(Long id) {

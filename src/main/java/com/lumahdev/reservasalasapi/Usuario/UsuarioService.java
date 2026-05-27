@@ -3,6 +3,8 @@ package com.lumahdev.reservasalasapi.Usuario;
 import com.lumahdev.reservasalasapi.Excecao.Excecao;
 import com.lumahdev.reservasalasapi.Reserva.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +26,10 @@ public class UsuarioService {
         return repository.save(new Usuario(dto));
     }
 
-    public List<DtoUsuario> buscarUsuarios() {
+    public Page<DtoUsuario> buscarUsuarios(Pageable paginacao) {
         return repository
-                .findAll()
-                .stream()
-                .map(DtoUsuario::new)
-                .toList();
+                .findAll(paginacao)
+                .map(DtoUsuario::new);
     }
 
     public Usuario buscarUsuario(Long id) {

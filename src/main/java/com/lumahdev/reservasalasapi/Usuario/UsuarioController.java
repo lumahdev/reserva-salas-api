@@ -2,6 +2,8 @@ package com.lumahdev.reservasalasapi.Usuario;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,8 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuarios")
-    public ResponseEntity<List<DtoUsuario>> listarUsuarios() {
-        List<DtoUsuario> usuarios = service.buscarUsuarios();
+    public ResponseEntity<Page<DtoUsuario>> listarUsuarios(Pageable paginacao) {
+        Page<DtoUsuario> usuarios = service.buscarUsuarios(paginacao);
         return ResponseEntity.ok(usuarios);
     }
 

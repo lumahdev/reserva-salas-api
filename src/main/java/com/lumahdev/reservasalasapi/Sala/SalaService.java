@@ -4,6 +4,8 @@ import com.lumahdev.reservasalasapi.Excecao.Excecao;
 import com.lumahdev.reservasalasapi.Reserva.ReservaRepository;
 import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +27,10 @@ public class SalaService {
         return repository.save(new Sala(dto));
     }
 
-    public List<DtoSala> buscarSalas() {
+    public Page<DtoSala> buscarSalas(Pageable paginacao) {
         return repository
-                .findAll()
-                .stream()
-                .map(DtoSala::new)
-                .toList();
+                .findAll(paginacao)
+                .map(DtoSala::new);
     }
 
     public Sala buscarSala(Long id) {

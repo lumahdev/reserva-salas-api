@@ -2,6 +2,8 @@ package com.lumahdev.reservasalasapi.Reserva;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,8 @@ public class ReservaController {
     }
 
     @GetMapping("/reservas")
-    public ResponseEntity<List<DtoReserva>> listarReservas() {
-        List<DtoReserva> reservas = service.buscarReservas();
+    public ResponseEntity<Page<DtoReserva>> listarReservas(Pageable paginacao) {
+        Page<DtoReserva> reservas = service.buscarReservas(paginacao);
         return ResponseEntity.ok(reservas);
     }
 
@@ -32,15 +34,15 @@ public class ReservaController {
     }
 
     @GetMapping("/reservas/usuarios/{id}")
-    public ResponseEntity<DtoReserva> listarReservaPorUsuarioId(@PathVariable Long id) {
-        Reserva reserva = service.buscarReservaPorUsuarioId(id);
-        return ResponseEntity.ok(new DtoReserva(reserva));
+    public ResponseEntity<Page<DtoReserva>> listarReservaPorUsuarioId(@PathVariable Long id, Pageable paginacao) {
+        Page<DtoReserva> reservas = service.buscarReservaPorUsuarioId(id, paginacao);
+        return ResponseEntity.ok(reservas);
     }
 
     @GetMapping("/reservas/salas/{id}")
-    public ResponseEntity<DtoReserva> listarReservaPorSalaId(@PathVariable Long id) {
-        Reserva reserva = service.buscarReservaPorSalaId(id);
-        return ResponseEntity.ok(new DtoReserva(reserva));
+    public ResponseEntity<Page<DtoReserva>> listarReservaPorSalaId(@PathVariable Long id, Pageable paginacao) {
+        Page<DtoReserva> reservas = service.buscarReservaPorSalaId(id, paginacao);
+        return ResponseEntity.ok(reservas);
     }
 
     @PutMapping("/reservas/{id}")

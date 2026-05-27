@@ -2,6 +2,8 @@ package com.lumahdev.reservasalasapi.Sala;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,8 @@ public class SalaController {
     }
 
     @GetMapping("/salas")
-    public ResponseEntity<List<DtoSala>> listarSalas() {
-        List<DtoSala> salas = service.buscarSalas();
+    public ResponseEntity<Page<DtoSala>> listarSalas(Pageable paginacao) {
+        Page<DtoSala> salas = service.buscarSalas(paginacao);
         return ResponseEntity.ok(salas);
     }
 
