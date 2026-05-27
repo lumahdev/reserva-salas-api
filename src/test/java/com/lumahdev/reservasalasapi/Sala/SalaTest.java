@@ -190,6 +190,9 @@ class SalaTest {
         mockMvc.perform(delete("/salas/" + id))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Sala deletada com sucesso."));
+        mockMvc.perform(get("/reservas/salas/" + id))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Não existe uma sala com este ID de sala."));
     }
 
     @Test
