@@ -251,6 +251,29 @@ public class ReservaTest {
     }
 
     @Test
+    void listar200PorUsuarioId() throws Exception {
+        Long usuarioId = cadastraUsuario().getUsuarioId();
+        Long salaId = cadastraSala().getSalaId();
+        Reserva reserva = cadastraReserva(salaId, usuarioId);
+        Long reservaId = reserva.getReservaId();
+        mockMvc.perform(get("/reservas/usuarios/" + usuarioId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(reservaId))
+                .andExpect(jsonPath("$.dataInicio").value(reserva.getDataInicio().toString()))
+                .andExpect(jsonPath("$.dataFim").value(reserva.getDataFim().toString()))
+                .andExpect(jsonPath("$.salaId").value(usuarioId))
+                .andExpect(jsonPath("$.usuarioId").value(salaId))
+                .andExpect(jsonPath("$.status").value(reserva.getStatus().name()));
+    }
+
+    @Test
+    void listar404PorUsuarioId() throws Exception {
+        mockMvc.perform(get("/reservas/usuarios/99999"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Não existe uma reserva com este ID."));
+    }
+
+    @Test
     void editar200AtivaParaCancelada() throws Exception {
         Long usuarioId = cadastraUsuario().getUsuarioId();
         Long salaId = cadastraSala().getSalaId();
