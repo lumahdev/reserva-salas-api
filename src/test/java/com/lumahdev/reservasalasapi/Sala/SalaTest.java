@@ -8,11 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -182,6 +180,21 @@ class SalaTest {
     @Test
     void editar404() throws Exception {
         mockMvc.perform(put("/salas/99999"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Não existe uma sala com este ID."));
+    }
+
+    @Test
+    void deletar200() throws Exception {
+        Long id = cadastraSala().getSalaId();
+        mockMvc.perform(delete("/salas/" + id))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Sala deletada com sucesso."));
+    }
+
+    @Test
+    void deletar404() throws Exception {
+        mockMvc.perform(delete("/salas/99999"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Não existe uma sala com este ID."));
     }
