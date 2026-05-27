@@ -1,6 +1,7 @@
 package com.lumahdev.reservasalasapi.Usuario;
 
 import com.lumahdev.reservasalasapi.Excecao.Excecao;
+import com.lumahdev.reservasalasapi.Reserva.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private ReservaRepository reservaRepository;
 
     public Usuario cadastrarUsuario(DtoCadastroUsuario dto) {
         if (repository.existsByTelefoneOrEmail(dto.telefone(), dto.email())) {
@@ -49,6 +53,7 @@ public class UsuarioService {
         Usuario usuario = buscarUsuario(id);
         if(usuario != null) {
             repository.deleteById(id);
+            reservaRepository.deleteAllByUsuarioId(id);
         }
     }
 }
