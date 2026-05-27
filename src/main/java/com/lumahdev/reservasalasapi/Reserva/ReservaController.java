@@ -31,6 +31,18 @@ public class ReservaController {
         return ResponseEntity.ok(new DtoReserva(reserva));
     }
 
+    @GetMapping("/reservas/usuarios/{id}")
+    public ResponseEntity<DtoReserva> listarReservaPorUsuarioId(@PathVariable Long id) {
+        Reserva reserva = service.buscarReservaPorUsuarioId(id);
+        return ResponseEntity.ok(new DtoReserva(reserva));
+    }
+
+    @GetMapping("/reservas/salas/{id}")
+    public ResponseEntity<DtoReserva> listarReservaPorSalaId(@PathVariable Long id) {
+        Reserva reserva = service.buscarReservaPorSalaId(id);
+        return ResponseEntity.ok(new DtoReserva(reserva));
+    }
+
     @PutMapping("/reservas/{id}")
     public ResponseEntity<DtoReserva> mudarDisponibilidadeReserva(@PathVariable Long id) {
         Reserva reserva = service.mudarDisponibilidadeReserva(id);

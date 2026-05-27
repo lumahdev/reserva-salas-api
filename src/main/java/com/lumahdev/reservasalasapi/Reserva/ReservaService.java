@@ -60,6 +60,22 @@ public class ReservaService {
                 .orElseThrow(() -> new Excecao("Não existe uma reserva com este ID.", HttpStatus.NOT_FOUND));
     }
 
+    public Reserva buscarReservaPorUsuarioId(Long id) {
+        Reserva reserva =  reservaRepository.findByUsuarioId(id);
+        if(reserva == null) {
+            throw new Excecao("Não existe uma reserva com este ID de usuário", HttpStatus.NOT_FOUND);
+        }
+        return reserva;
+    }
+
+    public Reserva buscarReservaPorSalaId(Long id) {
+        Reserva reserva =  reservaRepository.findBySalaId(id);
+        if(reserva == null) {
+            throw new Excecao("Não existe uma reserva com este ID de sala", HttpStatus.NOT_FOUND);
+        }
+        return reserva;
+    }
+
     public Reserva mudarDisponibilidadeReserva(Long id) {
         Reserva reserva = buscarReserva(id);
         if(reserva.getStatus() == ReservaStatusEnum.ATIVA) {
