@@ -63,7 +63,7 @@ public class ReservaService {
     public Reserva buscarReservaPorUsuarioId(Long id) {
         Reserva reserva =  reservaRepository.findByUsuarioId(id);
         if(reserva == null) {
-            throw new Excecao("Não existe uma reserva com este ID de usuário", HttpStatus.NOT_FOUND);
+            throw new Excecao("Não existe uma reserva com este ID de usuário.", HttpStatus.NOT_FOUND);
         }
         return reserva;
     }
@@ -71,7 +71,7 @@ public class ReservaService {
     public Reserva buscarReservaPorSalaId(Long id) {
         Reserva reserva =  reservaRepository.findBySalaId(id);
         if(reserva == null) {
-            throw new Excecao("Não existe uma reserva com este ID de sala", HttpStatus.NOT_FOUND);
+            throw new Excecao("Não existe uma reserva com este ID de sala.", HttpStatus.NOT_FOUND);
         }
         return reserva;
     }
