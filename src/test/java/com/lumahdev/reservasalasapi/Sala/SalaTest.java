@@ -43,7 +43,7 @@ class SalaTest {
                             }
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.nome").value("101"))
                 .andExpect(jsonPath("$.capacidade").value(50))

@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,9 +18,10 @@ public class UsuarioController {
     private UsuarioService service;
 
     @PostMapping("/usuarios")
-    public ResponseEntity<DtoUsuario> cadastrarUsuario(@RequestBody @Valid DtoCadastroUsuario dto) {
+    public ResponseEntity<DtoUsuario> cadastrarUsuario(@RequestBody @Valid DtoCadastroUsuario dto, UriComponentsBuilder uriBuilder) {
         Usuario usuario = service.cadastrarUsuario(dto);
-        return ResponseEntity.ok(new DtoUsuario(usuario));
+        URI uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getUsuarioId()).toUri();
+        return ResponseEntity.created(uri).body(new DtoUsuario(usuario));
     }
 
     @GetMapping("/usuarios")

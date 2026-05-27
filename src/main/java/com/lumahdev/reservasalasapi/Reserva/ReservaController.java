@@ -1,12 +1,15 @@
 package com.lumahdev.reservasalasapi.Reserva;
 
+import com.lumahdev.reservasalasapi.Usuario.DtoUsuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,9 +19,10 @@ public class ReservaController {
     private ReservaService service;
 
     @PostMapping("/reservas")
-    public ResponseEntity<DtoReserva> cadastrarReserva(@RequestBody @Valid DtoCadastroReserva dto) {
+    public ResponseEntity<DtoReserva> cadastrarReserva(@RequestBody @Valid DtoCadastroReserva dto, UriComponentsBuilder uriBuilder) {
         Reserva reserva = service.cadastrarReserva(dto);
-        return ResponseEntity.ok(new DtoReserva(reserva));
+        URI uri = uriBuilder.path("/reservas/{id}").buildAndExpand(reserva.getReservaId()).toUri();
+        return ResponseEntity.created(uri).body(new DtoReserva(reserva));
     }
 
     @GetMapping("/reservas")

@@ -45,7 +45,7 @@ class UsuarioTest {
                             }
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.nome").value("José"))
                 .andExpect(jsonPath("$.sobrenome").value("Bezerra"))

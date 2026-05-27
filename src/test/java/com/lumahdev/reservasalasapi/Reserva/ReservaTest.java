@@ -72,7 +72,7 @@ public class ReservaTest {
                                 salaId
                         ))
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.dataInicio").value("2026-05-30"))
                 .andExpect(jsonPath("$.dataFim").value("2026-06-30"))
