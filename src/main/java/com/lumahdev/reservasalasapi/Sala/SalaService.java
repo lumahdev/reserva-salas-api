@@ -1,6 +1,8 @@
 package com.lumahdev.reservasalasapi.Sala;
 
 import com.lumahdev.reservasalasapi.Excecao.Excecao;
+import com.lumahdev.reservasalasapi.Reserva.ReservaRepository;
+import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,8 +11,12 @@ import java.util.List;
 
 @Service
 public class SalaService {
+
     @Autowired
     private SalaRepository repository;
+
+    @Autowired
+    private ReservaRepository reservaRepository;
 
     public Sala cadastrarSala(DtoCadastroSala dto) {
         if(repository.existsByNome(dto.nome())) {
@@ -41,5 +47,13 @@ public class SalaService {
             sala.setStatus(SalaStatusEnum.DISPONIVEL);
         }
         return repository.save(sala);
+    }
+
+    public void deletarSala(Long id) {
+        Sala sala = buscarSala(id);
+        if(sala != null) {
+            repository.deleteById(id);
+//            reservaRepository.deleteAllBySalaId(id);
+        }
     }
 }

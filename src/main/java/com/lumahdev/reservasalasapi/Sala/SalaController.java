@@ -36,4 +36,10 @@ public class SalaController {
         Sala sala = service.mudarDisponibilidadeSala(id);
         return ResponseEntity.ok(new DtoSala(sala));
     }
+
+    @DeleteMapping("/salas/{id}")
+    public ResponseEntity<String> deletarSala(@PathVariable Long id) {
+        service.deletarSala(id);
+        return ResponseEntity.ok("Sala deletada com sucesso.");
+    }
 }
