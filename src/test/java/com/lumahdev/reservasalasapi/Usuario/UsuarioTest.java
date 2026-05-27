@@ -282,7 +282,7 @@ class UsuarioTest {
                 .andExpect(content().string("Usuário deletado com sucesso."));
         mockMvc.perform(get("/reservas/usuarios/" + id))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe uma reserva com este ID de usuário"));
+                .andExpect(jsonPath("$.error").value("Não existe uma reserva com este ID de usuário."));
     }
 
     @Test
