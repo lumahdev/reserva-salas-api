@@ -36,4 +36,10 @@ public class ReservaController {
         Reserva reserva = service.mudarDisponibilidadeReserva(id);
         return ResponseEntity.ok(new DtoReserva(reserva));
     }
+
+    @DeleteMapping("/reservas/{id}")
+    public ResponseEntity<String> deletarReserva(@PathVariable Long id) {
+        service.deletarReserva(id);
+        return ResponseEntity.ok("Reserva deletada com sucesso.");
+    }
 }

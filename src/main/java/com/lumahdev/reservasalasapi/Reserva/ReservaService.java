@@ -1,6 +1,7 @@
 package com.lumahdev.reservasalasapi.Reserva;
 
 import com.lumahdev.reservasalasapi.Excecao.Excecao;
+import com.lumahdev.reservasalasapi.Sala.Sala;
 import com.lumahdev.reservasalasapi.Sala.SalaRepository;
 import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +68,12 @@ public class ReservaService {
             reserva.setStatus(ReservaStatusEnum.ATIVA);
         }
         return reservaRepository.save(reserva);
+    }
+
+    public void deletarReserva(Long id) {
+        Reserva reserva = buscarReserva(id);
+        if(reserva != null) {
+            reservaRepository.deleteById(id);
+        }
     }
 }
