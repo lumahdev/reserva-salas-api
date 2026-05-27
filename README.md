@@ -25,7 +25,7 @@ Dados nome, sobrenome, email e telefone, cadastra um usuário. Os dados não pod
 ```
 
 ### 2. Listar usuários
-Retorna todos os usuários cadastrados.
+Retorna todos os usuários cadastrados, com paginação.
 - **GET** `/usuarios/`
 
 ### 3. Listar usuário
@@ -61,7 +61,7 @@ Dados nome, capacidade, andar e bloco, cadastra uma sala. Os dados não podem se
 ```
 
 ### 7. Listar salas
-Retorna todas as salas cadastradas.
+Retorna todas as salas cadastradas, com paginação.
 - **GET** `/salas/`
 
 ### 8. Listar sala
@@ -90,7 +90,7 @@ Dados data inicial, data final, id do usuário e id do cliente, cadastra uma res
 ```
 
 ### 12. Listar reservas
-Retorna todas as reservas cadastradas.
+Retorna todas as reservas cadastradas, com paginação.
 - **GET** `/reservas/`
 
 ### 13. Listar reserva
@@ -98,11 +98,11 @@ Dado id, retorna as informações da reserva, caso ela exista.
 - **GET** `/reservas/{id}`
 
 ### 14. Listar reservas de um usuário
-Dado id, retorna as reservas feitas por um usuário.
+Dado id, retorna as reservas feitas por um usuário, com paginação.
 - **GET** `/reservas/usuarios/{id}`
 
 ### 15. Listar reservas em uma sala
-Dado id, retorna as reservas feitas em uma sala.
+Dado id, retorna as reservas feitas em uma sala, com paginação.
 - **GET** `/reservas/salas/{id}`
 
 ### 16. Mudar disponibilidade da reserva
