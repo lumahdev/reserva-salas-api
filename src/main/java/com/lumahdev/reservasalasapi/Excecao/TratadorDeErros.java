@@ -20,7 +20,7 @@ public class TratadorDeErros {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> tratarValidacao(MethodArgumentNotValidException e) {
+    public ResponseEntity<Map<String, String>> tratarValidacaoDtos(MethodArgumentNotValidException e) {
         Map<String, String> erros = new HashMap<>();
         e.getBindingResult()
                 .getFieldErrors()
