@@ -2,16 +2,16 @@
 [![Java](https://img.shields.io/badge/Java-%23ED8B00.svg?logo=openjdk&logoColor=white)](#) [![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F.svg?logo=springboot&logoColor=white)](#) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1.svg?logo=postgresql&logoColor=white)](#) [![JUnit](https://img.shields.io/badge/JUnit-25A162.svg?logo=junit5&logoColor=white)](#) [![Auth0](https://img.shields.io/badge/Auth0-EB5424.svg?logo=auth0&logoColor=white)](#) [![JSON Web Tokens](https://img.shields.io/badge/JSON_Web_Tokens-000000.svg?logo=json-web-tokens&logoColor=white)](#)API REST para a reserva de salas desenvolvida utilizando PostgreSQL, Spring Boot, JUnit para testes, Auth0 + JWT para autenticação.
 
 ## Entidades
-| Entidade | Atributos |
-|-|-|
-| Usuário | nome, sobrenome, telefone, email |
-| Sala | nome, capacidade, andar, bloco, status |
+| Entidade | Atributos                                      |
+|-|------------------------------------------------|
+| Usuário | nome, sobrenome, telefone, email, login, senha |
+| Sala | nome, capacidade, andar, bloco, status         |
 | Reserva | dataInicio, dataFim, salaId, usuarioId, status |
-| Excecao (RuntimeException) | message, status |
+| Excecao (RuntimeException) | message, status                                |
 
 ## Rotas
 ### 1. Cadastrar usuário
-Dados nome, sobrenome, email e telefone, cadastra um usuário. Os dados não podem ser brancos ou nulos, email e telefone devem estar corretamente formatados. Não é possível cadastrar um usuário com email ou telefone já existentes.
+Dados nome, sobrenome, email, telefone, login e senha, cadastra um usuário. Os dados não podem ser brancos ou nulos, email e telefone devem estar corretamente formatados. Não é possível cadastrar um usuário com email ou telefone já existentes.
 - **POST** `/usuarios/`
 - **Corpo da requisição:**
 ```bash
@@ -19,7 +19,9 @@ Dados nome, sobrenome, email e telefone, cadastra um usuário. Os dados não pod
   "nome": "José",
   "sobrenome": "Bezerra",
   "email": "jose@email.com",
-  "telefone": "11987590982"
+  "telefone": "11987590982",
+  "login": "jose_be",
+  "senha": "Senha@123"
 }
 ```
 
