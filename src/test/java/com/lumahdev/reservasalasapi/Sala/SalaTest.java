@@ -58,7 +58,7 @@ class SalaTest {
                         .content("")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Corpo da requisição é obrigatório."));
+                .andExpect(jsonPath("$.message").value("Corpo da requisição é obrigatório."));
     }
 
     @Test
@@ -126,7 +126,7 @@ class SalaTest {
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Já existe uma sala cadastrada com estes dados."));
+                .andExpect(jsonPath("$.message").value("Já existe uma sala cadastrada com estes dados."));
     }
 
     @Test
@@ -160,7 +160,7 @@ class SalaTest {
     void listar404() throws Exception {
         mockMvc.perform(get("/salas/99999"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe uma sala com este ID."));
+                .andExpect(jsonPath("$.message").value("Não existe uma sala com este ID."));
     }
 
     @Test
@@ -181,7 +181,7 @@ class SalaTest {
     void editar404() throws Exception {
         mockMvc.perform(put("/salas/99999"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe uma sala com este ID."));
+                .andExpect(jsonPath("$.message").value("Não existe uma sala com este ID."));
     }
 
     @Test
@@ -192,13 +192,13 @@ class SalaTest {
                 .andExpect(content().string("Sala deletada com sucesso."));
         mockMvc.perform(get("/reservas/salas/" + id))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe uma sala com este ID de sala."));
+                .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID de sala."));
     }
 
     @Test
     void deletar404() throws Exception {
         mockMvc.perform(delete("/salas/99999"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe uma sala com este ID."));
+                .andExpect(jsonPath("$.message").value("Não existe uma sala com este ID."));
     }
 }

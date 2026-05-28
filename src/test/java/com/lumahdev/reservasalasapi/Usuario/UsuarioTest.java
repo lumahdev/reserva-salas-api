@@ -59,7 +59,7 @@ class UsuarioTest {
                         .content("")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Corpo da requisição é obrigatório."));
+                .andExpect(jsonPath("$.message").value("Corpo da requisição é obrigatório."));
     }
 
     @Test
@@ -112,7 +112,7 @@ class UsuarioTest {
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Já existe um usuário cadastrado com estes dados."));
+                .andExpect(jsonPath("$.message").value("Já existe um usuário cadastrado com estes dados."));
     }
 
     @Test
@@ -129,7 +129,7 @@ class UsuarioTest {
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Já existe um usuário cadastrado com estes dados."));
+                .andExpect(jsonPath("$.message").value("Já existe um usuário cadastrado com estes dados."));
     }
 
     @Test
@@ -146,7 +146,7 @@ class UsuarioTest {
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Já existe um usuário cadastrado com estes dados."));
+                .andExpect(jsonPath("$.message").value("Já existe um usuário cadastrado com estes dados."));
     }
 
     @Test
@@ -178,7 +178,7 @@ class UsuarioTest {
     void listar404() throws Exception {
         mockMvc.perform(get("/usuarios/99999"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe um usuário com este ID."));
+                .andExpect(jsonPath("$.message").value("Não existe um usuário com este ID."));
     }
 
     @Test
@@ -242,7 +242,7 @@ class UsuarioTest {
                         .content("")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Corpo da requisição é obrigatório."));
+                .andExpect(jsonPath("$.message").value("Corpo da requisição é obrigatório."));
         ;
     }
 
@@ -271,7 +271,7 @@ class UsuarioTest {
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe um usuário com este ID."));
+                .andExpect(jsonPath("$.message").value("Não existe um usuário com este ID."));
     }
 
     @Test
@@ -282,13 +282,13 @@ class UsuarioTest {
                 .andExpect(content().string("Usuário deletado com sucesso."));
         mockMvc.perform(get("/reservas/usuarios/" + id))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe uma reserva com este ID de usuário."));
+                .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID de usuário."));
     }
 
     @Test
     void deletar404() throws Exception {
         mockMvc.perform(delete("/usuarios/99999"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Não existe um usuário com este ID."));
+                .andExpect(jsonPath("$.message").value("Não existe um usuário com este ID."));
     }
 }
