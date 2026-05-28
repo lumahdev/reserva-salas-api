@@ -1,5 +1,6 @@
 package com.lumahdev.reservasalasapi.infra;
 
+import com.auth0.jwt.exceptions.JWTCreationException;
 import com.lumahdev.reservasalasapi.domain.Excecao.DtoExcecao;
 import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class TratadorErros {
-
-    @ExceptionHandler(Excecao.class)
-    public ResponseEntity<DtoExcecao> tratarExcecao(Excecao e) {
-        return ResponseEntity
-                .status(e.getStatus())
-                .body(new DtoExcecao(e.getMessage()));
-    }
+public class TratadorExceptions {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> tratarValidacaoDtos(MethodArgumentNotValidException e) {
@@ -35,10 +29,18 @@ public class TratadorErros {
         return ResponseEntity.badRequest().body(erros);
     }
 
+    @ExceptionHandler(Excecao.class)
+    public ResponseEntity<DtoExcecao> tratarExcecao(Excecao e) {
+        return ResponseEntity.status(e.getStatus()).body(new DtoExcecao(e.getMessage()));
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<DtoExcecao> tratarBodyVazio() {
-        return ResponseEntity
-                .badRequest()
-                .body(new DtoExcecao("Corpo da requisição é obrigatório."));
+        return ResponseEntity.badRequest().body(new DtoExcecao("Corpo da requisição é obrigatório."));
+    }
+
+    @ExceptionHandler(JWTCreationException.class)
+    public ResponseEntity<DtoExcecao> tratarErroJwt() {
+        return ResponseEntity.badRequest().body(new DtoExcecao("Ocorreu um erro ao tentar gerar um token JWT."));
     }
 }

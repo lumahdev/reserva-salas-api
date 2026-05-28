@@ -1,10 +1,16 @@
 package com.lumahdev.reservasalasapi.domain.Usuario;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long usuarioId;
     private String nome;
@@ -23,14 +29,6 @@ public class Usuario {
         this.telefone = dto.telefone();
         this.login = dto.login();
         this.senha = senha;
-    }
-
-    public Usuario(DtoCadastroUsuario dto) {
-        this.nome = dto.nome();
-        this.sobrenome = dto.sobrenome();
-        this.email = dto.email();
-        this.telefone = dto.telefone();
-        this.login = dto.login();
     }
 
     public Long getUsuarioId() {
@@ -62,6 +60,21 @@ public class Usuario {
     }
 
     public String getLogin() {
+        return login;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
         return login;
     }
 }
