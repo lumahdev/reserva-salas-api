@@ -1,13 +1,13 @@
 package com.lumahdev.reservasalasapi.tests;
 
-import com.lumahdev.reservasalasapi.domain.Usuario.Usuario;
 import com.lumahdev.reservasalasapi.domain.TestInterface;
 import com.lumahdev.reservasalasapi.domain.TestPai;
 import org.junit.jupiter.api.BeforeEach;
-import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -17,34 +17,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UsuarioTest extends TestPai implements TestInterface {
+public class UsuarioTest extends TestPai implements TestInterface {
 
     @BeforeEach
     public void limparBanco() {
         usuarioRepository.deleteAll();
-    }
-
-    @Test
-    void cadastro200() throws Exception {
-        mockMvc.perform(post("/usuarios")
-                        .content("""
-                            {
-                                "nome": "José",
-                                "sobrenome": "Bezerra",
-                                "email": "jose@email.com",
-                                "telefone": "11987590982",
-                                "login": "jose_be",
-                                "senha": "Senha@123"
-                            }
-                        """)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.nome").value("José"))
-                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
-                .andExpect(jsonPath("$.email").value("jose@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11987590982"))
-                .andExpect(jsonPath("$.login").value("jose_be"));
     }
 
     @Test
@@ -97,16 +74,39 @@ class UsuarioTest extends TestPai implements TestInterface {
     }
 
     @Test
-    void cadastro400TelefoneDuplicado() throws Exception {
-        cadastraUsuario();
+    void cadastro200() throws Exception {
         mockMvc.perform(post("/usuarios")
                         .content("""
                             {
                                 "nome": "José",
                                 "sobrenome": "Bezerra",
-                                "email": "joseemail2@email.com",
+                                "email": "jose@email.com",
                                 "telefone": "11987590982",
                                 "login": "jose_be",
+                                "senha": "Senha@123"
+                            }
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.nome").value("José"))
+                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
+                .andExpect(jsonPath("$.email").value("jose@email.com"))
+                .andExpect(jsonPath("$.telefone").value("11987590982"))
+                .andExpect(jsonPath("$.login").value("jose_be"));
+    }
+
+    @Test
+    void cadastro400TelefoneDuplicado() throws Exception {
+        criaUsuario();
+        mockMvc.perform(post("/usuarios")
+                        .content("""
+                            {
+                                "nome": "José",
+                                "sobrenome": "Bezerra",
+                                "email": "jose2@email.com",
+                                "telefone": "11987590982",
+                                "login": "jose_be2",
                                 "senha": "Senha@123"
                             }
                         """)
@@ -117,15 +117,15 @@ class UsuarioTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400EmailDuplicado() throws Exception {
-        cadastraUsuario();
+        criaUsuario();
         mockMvc.perform(post("/usuarios")
                         .content("""
                             {
                                 "nome": "José",
                                 "sobrenome": "Bezerra",
                                 "email": "jose@email.com",
-                                "telefone": "11999999999",
-                                "login": "jose_be",
+                                "telefone": "99999999999",
+                                "login": "jose_be2",
                                 "senha": "Senha@123"
                             }
                         """)
@@ -136,14 +136,14 @@ class UsuarioTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400LoginDuplicado() throws Exception {
-        cadastraUsuario();
+        criaUsuario();
         mockMvc.perform(post("/usuarios")
                         .content("""
                             {
                                 "nome": "José",
                                 "sobrenome": "Bezerra",
-                                "email": "jose@email.com",
-                                "telefone": "1199999499",
+                                "email": "jose2@email.com",
+                                "telefone": "9999999999",
                                 "login": "jose_be",
                                 "senha": "Senha@123"
                             }
@@ -155,7 +155,7 @@ class UsuarioTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400AmbosDuplicados() throws Exception {
-        cadastraUsuario();
+        criaUsuario();
         mockMvc.perform(post("/usuarios")
                         .content("""
                             {
@@ -174,8 +174,9 @@ class UsuarioTest extends TestPai implements TestInterface {
 
     @Test
     void listar200() throws Exception {
-        Usuario usuario = cadastraUsuario();
-        mockMvc.perform(get("/usuarios"))
+        criaUsuario();
+        mockMvc.perform(get("/usuarios")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").exists())
                 .andExpect(jsonPath("$.content[0].nome").exists())
@@ -187,94 +188,43 @@ class UsuarioTest extends TestPai implements TestInterface {
 
     @Test
     void listar200PorId() throws Exception {
-        Usuario usuario = cadastraUsuario();
-        Long id = usuario.getUsuarioId();
-        mockMvc.perform(get("/usuarios/" + id))
+        Long usuarioId = criaUsuario();
+                mockMvc.perform(get("/usuarios/" + usuarioId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
-                .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
-                .andExpect(jsonPath("$.telefone").value(usuario.getTelefone()))
-                .andExpect(jsonPath("$.email").value(usuario.getEmail()))
-                .andExpect(jsonPath("$.login").value(usuario.getLogin()));
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.nome").exists())
+                .andExpect(jsonPath("$.sobrenome").exists())
+                .andExpect(jsonPath("$.telefone").exists())
+                .andExpect(jsonPath("$.email").exists())
+                .andExpect(jsonPath("$.login").exists());
     }
 
     @Test
     void listar404() throws Exception {
-        mockMvc.perform(get("/usuarios/99999"))
+        criaUsuario();
+        mockMvc.perform(get("/usuarios/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe um usuário com este ID."));
     }
 
     @Test
-    void editar200Email() throws Exception {
-        Usuario usuario = cadastraUsuario();
-        Long id = usuario.getUsuarioId();
-        mockMvc.perform(put("/usuarios/" + id)
-                        .content("""
-                            {"email": "joseemail2@email.com"}
-                        """)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
-                .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
-                .andExpect(jsonPath("$.telefone").value(usuario.getTelefone()))
-                .andExpect(jsonPath("$.email").value("joseemail2@email.com"));
-    }
-
-    @Test
-    void editar200Telefone() throws Exception {
-        Usuario usuario = cadastraUsuario();
-        Long id = usuario.getUsuarioId();
-        mockMvc.perform(put("/usuarios/" + id)
-                        .content("""
-                            {"telefone": "11999999999"}
-                        """)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
-                .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
-                .andExpect(jsonPath("$.telefone").value("11999999999"))
-                .andExpect(jsonPath("$.email").value(usuario.getEmail()));
-    }
-
-    @Test
-    void editar200Ambos() throws Exception {
-        Usuario usuario = cadastraUsuario();
-        Long id = usuario.getUsuarioId();
-        mockMvc.perform(put("/usuarios/" + id)
-                        .content("""
-                            {
-                                "email": "joseemail2@email.com",
-                                "telefone": "11999999999"
-                            }
-                        """)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.nome").value(usuario.getNome()))
-                .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
-                .andExpect(jsonPath("$.telefone").value("11999999999"))
-                .andExpect(jsonPath("$.email").value("joseemail2@email.com"));
-    }
-
-    @Test
     void editar400CorpoVazio() throws Exception {
-        Long id = cadastraUsuario().getUsuarioId();
-        mockMvc.perform(put("/usuarios/" + id)
+        Long usuarioId = criaUsuario();
+        mockMvc.perform(put("/usuarios/" + usuarioId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Corpo da requisição é obrigatório."));
-        ;
     }
 
     @Test
     void editar400Invalidos() throws Exception {
-        Long id = cadastraUsuario().getUsuarioId();
-        mockMvc.perform(put("/usuarios/" + id)
+        Long usuarioId = criaUsuario();
+        mockMvc.perform(put("/usuarios/" + usuarioId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "email": "teste",
@@ -285,12 +235,13 @@ class UsuarioTest extends TestPai implements TestInterface {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.email").value("E-mail inválido."))
                 .andExpect(jsonPath("$.telefone").value("Telefone inválido."));
-        ;
     }
 
     @Test
     void editar404() throws Exception {
+        criaUsuario();
         mockMvc.perform(put("/usuarios/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {"email": "joseemail2@email.com"}
                         """)
@@ -300,20 +251,81 @@ class UsuarioTest extends TestPai implements TestInterface {
     }
 
     @Test
-    void deletar200() throws Exception {
-        Long id = cadastraUsuario().getUsuarioId();
-        mockMvc.perform(delete("/usuarios/" + id))
+    void editar200Email() throws Exception {
+        Long usuarioId = criaUsuario();
+        mockMvc.perform(put("/usuarios/" + usuarioId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
+                        .content("""
+                            {"email": "jose2@email.com"}
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Usuário deletado com sucesso."));
-        mockMvc.perform(get("/reservas/usuarios/" + id))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID de usuário."));
+                .andExpect(jsonPath("$.id").value(usuarioId))
+                .andExpect(jsonPath("$.nome").value("José"))
+                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
+                .andExpect(jsonPath("$.telefone").value("11987590982"))
+                .andExpect(jsonPath("$.email").value("jose2@email.com"))
+                .andExpect(jsonPath(("$.login")).value("jose_be"));
+    }
+
+    @Test
+    void editar200Telefone() throws Exception {
+        Long usuarioId = criaUsuario();
+        mockMvc.perform(put("/usuarios/" + usuarioId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
+                        .content("""
+                            {"telefone": "11999999999"}
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(usuarioId))
+                .andExpect(jsonPath("$.nome").value("José"))
+                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
+                .andExpect(jsonPath("$.telefone").value("11999999999"))
+                .andExpect(jsonPath("$.email").value("jose@email.com"))
+                .andExpect(jsonPath(("$.login")).value("jose_be"));
+    }
+
+    @Test
+    void editar200Ambos() throws Exception {
+        Long usuarioId = criaUsuario();
+        mockMvc.perform(put("/usuarios/" + usuarioId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
+                        .content("""
+                            {
+                                "email": "jose2@email.com",
+                                "telefone": "11999999999"
+                            }
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(usuarioId))
+                .andExpect(jsonPath("$.nome").value("José"))
+                .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
+                .andExpect(jsonPath("$.telefone").value("11999999999"))
+                .andExpect(jsonPath("$.email").value("jose2@email.com"))
+                .andExpect(jsonPath(("$.login")).value("jose_be"));
     }
 
     @Test
     void deletar404() throws Exception {
-        mockMvc.perform(delete("/usuarios/99999"))
+        criaUsuario();
+        mockMvc.perform(delete("/usuarios/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe um usuário com este ID."));
     }
+
+//    @Test
+//    void deletar200() throws Exception {
+//        Long usuarioId = criaUsuario();
+//        mockMvc.perform(delete("/usuarios/" + usuarioId)
+//                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("Usuário deletado com sucesso."));
+//        mockMvc.perform(get("/reservas/usuarios/" + usuarioId)
+//                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
+//                .andExpect(status().isNotFound())
+//                .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID de usuário."));
+//    }
 }

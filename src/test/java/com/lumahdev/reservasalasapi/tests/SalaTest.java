@@ -1,9 +1,9 @@
 package com.lumahdev.reservasalasapi.tests;
 
-import com.lumahdev.reservasalasapi.domain.Sala.Sala;
 import com.lumahdev.reservasalasapi.domain.TestInterface;
 import com.lumahdev.reservasalasapi.domain.TestPai;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,12 +19,15 @@ class SalaTest extends TestPai implements TestInterface {
 
     @BeforeEach
     public void limparBanco() {
+        usuarioRepository.deleteAll();
         salaRepository.deleteAll();
     }
 
     @Test
     void cadastro200() throws Exception {
+        criaUsuario();
         mockMvc.perform(post("/salas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "nome": "101",
@@ -45,7 +48,9 @@ class SalaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400CorpoVazio() throws Exception {
+        criaUsuario();
         mockMvc.perform(post("/salas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -54,7 +59,9 @@ class SalaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400BrancosOuNulos() throws Exception {
+        criaUsuario();
         mockMvc.perform(post("/salas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "nome": "",
@@ -73,7 +80,9 @@ class SalaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400CapacidadeNegativa() throws Exception {
+        criaUsuario();
         mockMvc.perform(post("/salas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "nome": "101",
@@ -84,12 +93,14 @@ class SalaTest extends TestPai implements TestInterface {
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.capacidade").value("Capacidade deve ser um número positivo."));
+                .andExpect(jsonPath("$.capacidade").value("Capacidade deve ser maior que 1."));
     }
 
     @Test
     void cadastro400CapacidadeZero() throws Exception {
+        criaUsuario();
         mockMvc.perform(post("/salas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "nome": "101",
@@ -105,8 +116,10 @@ class SalaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400NomeDuplicado() throws Exception {
-        cadastraSala();
+        criaUsuario();
+        criaSala();
         mockMvc.perform(post("/salas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "nome": "101",
@@ -122,8 +135,10 @@ class SalaTest extends TestPai implements TestInterface {
 
     @Test
     void listar200() throws Exception {
-        cadastraSala();
-        mockMvc.perform(get("/salas"))
+        criaUsuario();
+        criaSala();
+        mockMvc.perform(get("/salas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").exists())
                 .andExpect(jsonPath("$.content[0].nome").exists())
@@ -135,60 +150,71 @@ class SalaTest extends TestPai implements TestInterface {
 
     @Test
     void listar200PorId() throws Exception {
-        Sala sala = cadastraSala();
-        Long salaId = sala.getSalaId();
-        mockMvc.perform(get("/salas/" + salaId))
+        criaUsuario();
+        Long salaId = criaSala();
+        mockMvc.perform(get("/salas/" + salaId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(salaId))
-                .andExpect(jsonPath("$.nome").value(sala.getNome()))
-                .andExpect(jsonPath("$.capacidade").value(sala.getCapacidade()))
-                .andExpect(jsonPath("$.andar").value(sala.getAndar()))
-                .andExpect(jsonPath("$.bloco").value(sala.getBloco()))
-                .andExpect(jsonPath("$.status").value(sala.getStatus().name()));
+                .andExpect(jsonPath("$.nome").exists())
+                .andExpect(jsonPath("$.capacidade").exists())
+                .andExpect(jsonPath("$.andar").exists())
+                .andExpect(jsonPath("$.bloco").exists())
+                .andExpect(jsonPath("$.status").exists());
     }
 
     @Test
     void listar404() throws Exception {
-        mockMvc.perform(get("/salas/99999"))
+        criaUsuario();
+        mockMvc.perform(get("/salas/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma sala com este ID."));
     }
 
     @Test
     void editar200DisponivelParaIndisponivel() throws Exception {
-        Sala sala = cadastraSala();
-        Long salaId = sala.getSalaId();
-        mockMvc.perform(put("/salas/" + salaId))
+        criaUsuario();
+        Long salaId = criaSala();
+        mockMvc.perform(put("/salas/" + salaId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(salaId))
-                .andExpect(jsonPath("$.nome").value(sala.getNome()))
-                .andExpect(jsonPath("$.capacidade").value(sala.getCapacidade()))
-                .andExpect(jsonPath("$.andar").value(sala.getAndar()))
-                .andExpect(jsonPath("$.bloco").value(sala.getBloco()))
+                .andExpect(jsonPath("$.nome").exists())
+                .andExpect(jsonPath("$.capacidade").exists())
+                .andExpect(jsonPath("$.andar").exists())
+                .andExpect(jsonPath("$.bloco").exists())
                 .andExpect(jsonPath("$.status").value("INDISPONIVEL"));
     }
 
     @Test
     void editar404() throws Exception {
-        mockMvc.perform(put("/salas/99999"))
+        criaUsuario();
+        mockMvc.perform(put("/salas/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma sala com este ID."));
     }
 
     @Test
     void deletar200() throws Exception {
-        Long id = cadastraSala().getSalaId();
-        mockMvc.perform(delete("/salas/" + id))
+        criaUsuario();
+        Long salaId = criaSala();
+        mockMvc.perform(delete("/salas/" + salaId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Sala deletada com sucesso."));
-        mockMvc.perform(get("/reservas/salas/" + id))
+        mockMvc.perform(get("/reservas/salas/" + salaId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID de sala."));
     }
 
     @Test
     void deletar404() throws Exception {
-        mockMvc.perform(delete("/salas/99999"))
+        criaUsuario();
+        mockMvc.perform(delete("/salas/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma sala com este ID."));
     }

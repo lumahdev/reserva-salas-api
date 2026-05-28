@@ -1,5 +1,6 @@
 package com.lumahdev.reservasalasapi.domain;
 
+import com.jayway.jsonpath.JsonPath;
 import com.lumahdev.reservasalasapi.domain.Reserva.DtoCadastroReserva;
 import com.lumahdev.reservasalasapi.domain.Reserva.Reserva;
 import com.lumahdev.reservasalasapi.domain.Reserva.ReservaRepository;
@@ -12,20 +13,19 @@ import com.lumahdev.reservasalasapi.domain.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.time.LocalDate;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TestPai {
-
-    @Autowired
-    protected MockMvc mockMvc;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Autowired
     protected UsuarioRepository usuarioRepository;
@@ -36,17 +36,47 @@ public class TestPai {
     @Autowired
     protected ReservaRepository reservaRepository;
 
-    protected Usuario cadastraUsuario() {
-        return usuarioRepository.save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982", "jose_be", "Senha@123"), passwordEncoder.encode("Senha@123")));
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    protected Long criaUsuario() {
+        return usuarioRepository
+                .save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982", "jose_be", "Senha@123"), passwordEncoder.encode("Senha@123")))
+                .getUsuarioId();
     }
 
-    protected Sala cadastraSala() {
-        return salaRepository.save(new Sala(new DtoCadastroSala("101", 50, "1", "Orquídeas")));
+    private String realizaLogin() throws Exception {
+        MvcResult result = mockMvc.perform(post("/auth/login")
+                        .content("""
+                        {
+                            "login": "jose_be",
+                            "senha": "Senha@123"
+                        }
+                    """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        String response = result.getResponse().getContentAsString();
+        return JsonPath.read(response, "$.token");
     }
 
-    protected Reserva cadastraReserva(Long salaId, Long usuarioId) {
+    protected String bearerToken() throws Exception {
+        return "Bearer " + realizaLogin();
+    }
+
+    protected Long criaSala() {
+        return salaRepository
+                .save(new Sala(new DtoCadastroSala("101", 50, "1", "Orquídeas")))
+                .getSalaId();
+    }
+
+    protected Long criaReserva(Long salaId, Long usuarioId) {
         LocalDate dataInicio = LocalDate.parse("2026-05-30");
         LocalDate dataFim = LocalDate.parse("2026-06-30");
-        return reservaRepository.save(new Reserva(new DtoCadastroReserva(dataInicio, dataFim, salaId, usuarioId)));
+        return reservaRepository
+                .save(new Reserva(new DtoCadastroReserva(dataInicio, dataFim, salaId, usuarioId)))
+                .getReservaId();
     }
+
+    @Autowired
+    protected MockMvc mockMvc;
 }

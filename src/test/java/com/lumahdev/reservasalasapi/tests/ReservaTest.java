@@ -1,9 +1,9 @@
 package com.lumahdev.reservasalasapi.tests;
 
-import com.lumahdev.reservasalasapi.domain.Reserva.Reserva;
 import com.lumahdev.reservasalasapi.domain.TestInterface;
 import com.lumahdev.reservasalasapi.domain.TestPai;
 import org.junit.jupiter.api.BeforeEach;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,9 +26,10 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro200() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
         mockMvc.perform(post("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "dataInicio": "2026-05-30",
@@ -52,7 +53,9 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400CorpoVazio() throws Exception {
+        criaUsuario();
         mockMvc.perform(post("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -61,7 +64,9 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400BrancosOuNulos() throws Exception {
+        criaUsuario();
         mockMvc.perform(post("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "dataInicio": "",
@@ -80,9 +85,10 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400Invalidos() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
         mockMvc.perform(post("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "dataInicio": "2000-01-01",
@@ -102,9 +108,10 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400DataFimAnterior() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
         mockMvc.perform(post("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "dataInicio": "2026-05-30",
@@ -123,10 +130,11 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro400SalaJaOcupada() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
-        cadastraReserva(salaId, usuarioId);
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
+        criaReserva(salaId, usuarioId);
         mockMvc.perform(post("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "dataInicio": "2026-05-30",
@@ -145,8 +153,9 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro404Sala() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
+        Long usuarioId = criaUsuario();
         mockMvc.perform(post("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "dataInicio": "2026-05-30",
@@ -164,8 +173,10 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void cadastro404Usuario() throws Exception {
-        Long salaId = cadastraSala().getSalaId();
+        criaUsuario();
+        Long salaId = criaSala();
         mockMvc.perform(post("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
                                 "dataInicio": "2026-05-30",
@@ -183,10 +194,11 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void listar200() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
-        cadastraReserva(salaId, usuarioId);
-        mockMvc.perform(get("/reservas"))
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
+        criaReserva(salaId, usuarioId);
+        mockMvc.perform(get("/reservas")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").exists())
                 .andExpect(jsonPath("$.content[0].dataInicio").exists())
@@ -198,11 +210,11 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void listar200PorId() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
-        Reserva reserva = cadastraReserva(salaId, usuarioId);
-        Long reservaId = reserva.getReservaId();
-        mockMvc.perform(get("/reservas/" + reservaId))
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
+        Long reservaId = criaReserva(salaId, usuarioId);
+        mockMvc.perform(get("/reservas/" + reservaId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.dataInicio").exists())
@@ -214,17 +226,20 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void listar404PorId() throws Exception {
-        mockMvc.perform(get("/reservas/99999"))
+        criaUsuario();
+        mockMvc.perform(get("/reservas/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID."));
     }
 
     @Test
     void listar200PorUsuarioId() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
-        Reserva reserva = cadastraReserva(salaId, usuarioId);
-        mockMvc.perform(get("/reservas/usuarios/" + usuarioId))
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
+        criaReserva(salaId, usuarioId);
+        mockMvc.perform(get("/reservas/usuarios/" + usuarioId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").exists())
                 .andExpect(jsonPath("$.content[0].dataInicio").exists())
@@ -236,17 +251,20 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void listar404PorUsuarioId() throws Exception {
-        mockMvc.perform(get("/reservas/usuarios/99999"))
+        criaUsuario();
+        mockMvc.perform(get("/reservas/usuarios/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID de usuário."));
     }
 
     @Test
     void listar200PorSalaId() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
-        Reserva reserva = cadastraReserva(salaId, usuarioId);
-        mockMvc.perform(get("/reservas/salas/" + salaId))
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
+        criaReserva(salaId, usuarioId);
+        mockMvc.perform(get("/reservas/salas/" + salaId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").exists())
                 .andExpect(jsonPath("$.content[0].dataInicio").exists())
@@ -258,18 +276,20 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void listar404PorSalaId() throws Exception {
-        mockMvc.perform(get("/reservas/salas/99999"))
+        criaUsuario();
+        mockMvc.perform(get("/reservas/salas/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID de sala."));
     }
 
     @Test
     void editar200AtivaParaCancelada() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
-        Reserva reserva = cadastraReserva(salaId, usuarioId);
-        Long reservaId = reserva.getReservaId();
-        mockMvc.perform(put("/reservas/" + reservaId))
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
+        Long reservaId = criaReserva(salaId, usuarioId);
+        mockMvc.perform(put("/reservas/" + reservaId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.dataInicio").exists())
@@ -281,25 +301,29 @@ public class ReservaTest extends TestPai implements TestInterface {
 
     @Test
     void editar404() throws Exception {
-        mockMvc.perform(put("/salas/99999"))
+        criaUsuario();
+        mockMvc.perform(put("/salas/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma sala com este ID."));
     }
 
     @Test
     void deletar200() throws Exception {
-        Long usuarioId = cadastraUsuario().getUsuarioId();
-        Long salaId = cadastraSala().getSalaId();
-        Reserva reserva = cadastraReserva(salaId, usuarioId);
-        Long reservaId = reserva.getReservaId();
-        mockMvc.perform(delete("/reservas/" + reservaId))
+        Long usuarioId = criaUsuario();
+        Long salaId = criaSala();
+        Long reservaId = criaReserva(salaId, usuarioId);
+        mockMvc.perform(delete("/reservas/" + reservaId)
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Reserva deletada com sucesso."));
     }
 
     @Test
     void deletar404() throws Exception {
-        mockMvc.perform(delete("/reservas/99999"))
+        criaUsuario();
+        mockMvc.perform(delete("/reservas/99999")
+                        .header(HttpHeaders.AUTHORIZATION, bearerToken()))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("Não existe uma reserva com este ID."));
     }
