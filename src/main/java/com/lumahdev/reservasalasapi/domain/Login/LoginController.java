@@ -17,8 +17,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/entrar")
-public class AutenticacaoController {
+@RequestMapping("/auth/login")
+public class LoginController {
 
     @Autowired
     private AuthenticationManager manager;
