@@ -113,3 +113,14 @@ Dados id, atualiza a disponibilidade da reserva (ativa <-> cancelada), caso ele 
 ### 17. Deletar reserva
 Dado id, deleta a reserva.
 - **DELETE** `/reservas/{id}`
+
+### 18. Realizar login
+Dado login e senha, realiza login e devolve um token JWT.
+- **POST** `auth/login/`
+- **Corpo da requisição:**
+```bash
+{
+  "login": "jose_be",
+  "senha": "Senha@123"
+}
+```
