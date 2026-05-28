@@ -8,7 +8,6 @@
 | Sala | nome, capacidade, andar, bloco, status |
 | Reserva | dataInicio, dataFim, salaId, usuarioId, status |
 | Excecao (RuntimeException) | message, status |
-| DtoErro | error |
 
 ## Rotas
 ### 1. Cadastrar usuário
