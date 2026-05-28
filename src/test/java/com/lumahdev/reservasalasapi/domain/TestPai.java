@@ -33,7 +33,7 @@ public class TestPai {
     protected ReservaRepository reservaRepository;
 
     protected Usuario cadastraUsuario() {
-        return usuarioRepository.save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982", "jose_be", "Senha@123")));
+        return usuarioRepository.save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982", "jose_be", "Senha@123"), "$2a$12$VJRr5thC.Muz.01JkDa6BOd3hcHHIf0J.FwuuZeGAu.mTFte4wOYu"));
     }
 
     protected Sala cadastraSala() {
