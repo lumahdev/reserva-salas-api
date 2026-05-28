@@ -1,6 +1,6 @@
 package com.lumahdev.reservasalasapi.infra.security;
 
-import com.lumahdev.reservasalasapi.infra.TratadorLogin;
+import com.lumahdev.reservasalasapi.infra.AuthenticationHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +16,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class ConfigsSecurity {
+public class Configs {
 
     @Autowired
-    private TratadorLogin tratadorLogin;
+    private AuthenticationHandler tratadorLogin;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -36,8 +36,7 @@ public class ConfigsSecurity {
                                 .anyRequest()
                                 .authenticated())
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(tratadorLogin)
-                )
+                        .authenticationEntryPoint(tratadorLogin))
                 .build();
     }
 

@@ -12,7 +12,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 @Component
-public class TratadorLogin implements AuthenticationEntryPoint {
+public class AuthenticationHandler implements AuthenticationEntryPoint {
 
     @Autowired
     private ObjectMapper objectMapper;

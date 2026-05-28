@@ -1,8 +1,8 @@
 package com.lumahdev.reservasalasapi.domain.Login;
 
 import com.lumahdev.reservasalasapi.domain.Usuario.Usuario;
-import com.lumahdev.reservasalasapi.infra.security.DtoToken;
-import com.lumahdev.reservasalasapi.infra.security.TokenService;
+import com.lumahdev.reservasalasapi.infra.security.Token.DtoToken;
+import com.lumahdev.reservasalasapi.infra.security.Token.TokenService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

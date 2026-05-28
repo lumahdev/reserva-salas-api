@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.infra.security;
+package com.lumahdev.reservasalasapi.infra.security.Token;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
