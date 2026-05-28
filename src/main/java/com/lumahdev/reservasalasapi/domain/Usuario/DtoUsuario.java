@@ -5,7 +5,8 @@ public record DtoUsuario (
         String nome,
         String sobrenome,
         String email,
-        String telefone
+        String telefone,
+        String login
 ) {
     public DtoUsuario (Usuario usuario) {
         this(
@@ -13,7 +14,8 @@ public record DtoUsuario (
                 usuario.getNome(),
                 usuario.getSobrenome(),
                 usuario.getEmail(),
-                usuario.getTelefone()
+                usuario.getTelefone(),
+                usuario.getLogin()
         );
     }
 }
