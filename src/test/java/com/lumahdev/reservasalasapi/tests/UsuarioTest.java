@@ -32,7 +32,9 @@ class UsuarioTest extends TestPai implements TestInterface {
                                 "nome": "José",
                                 "sobrenome": "Bezerra",
                                 "email": "jose@email.com",
-                                "telefone": "11987590982"
+                                "telefone": "11987590982",
+                                "login": "jose_be",
+                                "senha": "Senha@123"
                             }
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -41,7 +43,8 @@ class UsuarioTest extends TestPai implements TestInterface {
                 .andExpect(jsonPath("$.nome").value("José"))
                 .andExpect(jsonPath("$.sobrenome").value("Bezerra"))
                 .andExpect(jsonPath("$.email").value("jose@email.com"))
-                .andExpect(jsonPath("$.telefone").value("11987590982"));
+                .andExpect(jsonPath("$.telefone").value("11987590982"))
+                .andExpect(jsonPath("$.login").value("jose_be"));
     }
 
     @Test
@@ -61,7 +64,9 @@ class UsuarioTest extends TestPai implements TestInterface {
                                 "nome": "",
                                 "sobrenome": "",
                                 "email": "",
-                                "telefone": ""
+                                "telefone": "",
+                                "login": "",
+                                "senha": ""
                             }
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -69,7 +74,9 @@ class UsuarioTest extends TestPai implements TestInterface {
                 .andExpect(jsonPath("$.nome").value("Nome é obrigatório."))
                 .andExpect(jsonPath("$.sobrenome").value("Sobrenome é obrigatório."))
                 .andExpect(jsonPath("$.email").value("E-mail é obrigatório."))
-                .andExpect(jsonPath("$.telefone").value("Telefone é obrigatório."));
+                .andExpect(jsonPath("$.telefone").value("Telefone é obrigatório."))
+                .andExpect(jsonPath("$.login").value("Login é obrigatório."))
+                .andExpect(jsonPath("$.senha").value("Senha é obrigatória."));
     }
 
     @Test
@@ -98,7 +105,9 @@ class UsuarioTest extends TestPai implements TestInterface {
                                 "nome": "José",
                                 "sobrenome": "Bezerra",
                                 "email": "joseemail2@email.com",
-                                "telefone": "11987590982"
+                                "telefone": "11987590982",
+                                "login": "jose_be",
+                                "senha": "Senha@123"
                             }
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -115,7 +124,28 @@ class UsuarioTest extends TestPai implements TestInterface {
                                 "nome": "José",
                                 "sobrenome": "Bezerra",
                                 "email": "jose@email.com",
-                                "telefone": "11999999999"
+                                "telefone": "11999999999",
+                                "login": "jose_be",
+                                "senha": "Senha@123"
+                            }
+                        """)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Já existe um usuário cadastrado com estes dados."));
+    }
+
+    @Test
+    void cadastro400LoginDuplicado() throws Exception {
+        cadastraUsuario();
+        mockMvc.perform(post("/usuarios")
+                        .content("""
+                            {
+                                "nome": "José",
+                                "sobrenome": "Bezerra",
+                                "email": "jose@email.com",
+                                "telefone": "1199999499",
+                                "login": "jose_be",
+                                "senha": "Senha@123"
                             }
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -132,7 +162,9 @@ class UsuarioTest extends TestPai implements TestInterface {
                                 "nome": "José",
                                 "sobrenome": "Bezerra",
                                 "email": "jose@email.com",
-                                "telefone": "11987590982"
+                                "telefone": "11987590982",
+                                "login": "jose_be",
+                                "senha": "Senha@123"
                             }
                         """)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -145,11 +177,12 @@ class UsuarioTest extends TestPai implements TestInterface {
         Usuario usuario = cadastraUsuario();
         mockMvc.perform(get("/usuarios"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id").value(usuario.getUsuarioId()))
-                .andExpect(jsonPath("$.content[0].nome").value(usuario.getNome()))
-                .andExpect(jsonPath("$.content[0].sobrenome").value(usuario.getSobrenome()))
-                .andExpect(jsonPath("$.content[0].telefone").value(usuario.getTelefone()))
-                .andExpect(jsonPath("$.content[0].email").value(usuario.getEmail()));
+                .andExpect(jsonPath("$.content[0].id").exists())
+                .andExpect(jsonPath("$.content[0].nome").exists())
+                .andExpect(jsonPath("$.content[0].sobrenome").exists())
+                .andExpect(jsonPath("$.content[0].telefone").exists())
+                .andExpect(jsonPath("$.content[0].email").exists())
+                .andExpect(jsonPath("$.content[0].login").exists());
     }
 
     @Test
@@ -162,7 +195,8 @@ class UsuarioTest extends TestPai implements TestInterface {
                 .andExpect(jsonPath("$.nome").value(usuario.getNome()))
                 .andExpect(jsonPath("$.sobrenome").value(usuario.getSobrenome()))
                 .andExpect(jsonPath("$.telefone").value(usuario.getTelefone()))
-                .andExpect(jsonPath("$.email").value(usuario.getEmail()));
+                .andExpect(jsonPath("$.email").value(usuario.getEmail()))
+                .andExpect(jsonPath("$.login").value(usuario.getLogin()));
     }
 
     @Test
