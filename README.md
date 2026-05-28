@@ -10,9 +10,11 @@
 | Excecao (RuntimeException) | message, status                                |
 
 ## Rotas
+⚠️ Todas as rotas necessitam de cabeçalho com Authorization Bearer `token`, exceto **POST** `/auth/login` e **POST** `/usuarios`. Gere um token após se cadastrar, ao realizar login.
+
 ### 1. Cadastrar usuário
 Dados nome, sobrenome, email, telefone, login e senha, cadastra um usuário. Os dados não podem ser brancos ou nulos, email e telefone devem estar corretamente formatados. Não é possível cadastrar um usuário com email ou telefone já existentes.
-- **POST** `/usuarios/`
+- **POST** `/usuarios`
 - **Corpo da requisição:**
 ```bash
 {
@@ -27,7 +29,7 @@ Dados nome, sobrenome, email, telefone, login e senha, cadastra um usuário. Os 
 
 ### 2. Listar usuários
 Retorna todos os usuários cadastrados, com paginação.
-- **GET** `/usuarios/`
+- **GET** `/usuarios`
 
 ### 3. Listar usuário
 Dado id, retorna as informações do usuário, caso ele exista.
@@ -50,7 +52,7 @@ Dados id do usuário, o deleta do banco de dados, junto com suas reservas feitas
 
 ### 6. Cadastrar sala
 Dados nome, capacidade, andar e bloco, cadastra uma sala. Os dados não podem ser brancos ou nulos. Não é possível cadastrar uma sala com nome já existentes.
-- **POST** `/salas/`
+- **POST** `/salas`
 - **Corpo da requisição:**
 ```bash
 {
@@ -63,7 +65,7 @@ Dados nome, capacidade, andar e bloco, cadastra uma sala. Os dados não podem se
 
 ### 7. Listar salas
 Retorna todas as salas cadastradas, com paginação.
-- **GET** `/salas/`
+- **GET** `/salas`
 
 ### 8. Listar sala
 Dado id, retorna as informações da sala, caso ela exista.
@@ -79,7 +81,7 @@ Dado id, deleta a sala do banco de dados, junto com as reservas feitas nela.
 
 ### 11. Cadastrar reserva
 Dados data inicial, data final, id do usuário e id do cliente, cadastra uma reserva. Os dados não podem ser brancos ou nulos, as datas devem ser futuras e não é possível com que a data final seja anterior à inicial. Não é possível realizar uma reserva quando usuário e salas são inexistentes ou já exista uma reserva para a data especificada.
-- **POST** `/reservas/`
+- **POST** `/reservas`
 - **Corpo da requisição:**
 ```bash
 {
@@ -92,7 +94,7 @@ Dados data inicial, data final, id do usuário e id do cliente, cadastra uma res
 
 ### 12. Listar reservas
 Retorna todas as reservas cadastradas, com paginação.
-- **GET** `/reservas/`
+- **GET** `/reservas`
 
 ### 13. Listar reserva
 Dado id, retorna as informações da reserva, caso ela exista.
@@ -116,7 +118,7 @@ Dado id, deleta a reserva.
 
 ### 18. Realizar login
 Dado login e senha, realiza login e devolve um token JWT.
-- **POST** `auth/login/`
+- **POST** `/auth/login`
 - **Corpo da requisição:**
 ```bash
 {
