@@ -11,14 +11,26 @@ public class Usuario {
     private String sobrenome;
     private String email;
     private String telefone;
+    private String login;
+    private String senha;
 
     public Usuario() { }
+
+    public Usuario(DtoCadastroUsuario dto, String senha) {
+        this.nome = dto.nome();
+        this.sobrenome = dto.sobrenome();
+        this.email = dto.email();
+        this.telefone = dto.telefone();
+        this.login = dto.login();
+        this.senha = senha;
+    }
 
     public Usuario(DtoCadastroUsuario dto) {
         this.nome = dto.nome();
         this.sobrenome = dto.sobrenome();
         this.email = dto.email();
         this.telefone = dto.telefone();
+        this.login = dto.login();
     }
 
     public Long getUsuarioId() {
@@ -47,5 +59,9 @@ public class Usuario {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getLogin() {
+        return login;
     }
 }
