@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.Usuario;
+package com.lumahdev.reservasalasapi.domain.Usuario;
 
 public record DtoUsuario (
         Long id,

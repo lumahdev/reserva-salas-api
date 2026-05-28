@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.Reserva;
+package com.lumahdev.reservasalasapi.domain.Reserva;
 
 public enum ReservaStatusEnum {
     ATIVA,

@@ -1,6 +1,6 @@
 package com.lumahdev.reservasalasapi.tests;
 
-import com.lumahdev.reservasalasapi.Sala.Sala;
+import com.lumahdev.reservasalasapi.domain.Sala.Sala;
 import com.lumahdev.reservasalasapi.domain.TestInterface;
 import com.lumahdev.reservasalasapi.domain.TestPai;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.Sala;
+package com.lumahdev.reservasalasapi.domain.Sala;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,14 +1,14 @@
 package com.lumahdev.reservasalasapi.domain;
 
-import com.lumahdev.reservasalasapi.Reserva.DtoCadastroReserva;
-import com.lumahdev.reservasalasapi.Reserva.Reserva;
-import com.lumahdev.reservasalasapi.Reserva.ReservaRepository;
-import com.lumahdev.reservasalasapi.Sala.DtoCadastroSala;
-import com.lumahdev.reservasalasapi.Sala.Sala;
-import com.lumahdev.reservasalasapi.Sala.SalaRepository;
-import com.lumahdev.reservasalasapi.Usuario.DtoCadastroUsuario;
-import com.lumahdev.reservasalasapi.Usuario.Usuario;
-import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
+import com.lumahdev.reservasalasapi.domain.Reserva.DtoCadastroReserva;
+import com.lumahdev.reservasalasapi.domain.Reserva.Reserva;
+import com.lumahdev.reservasalasapi.domain.Reserva.ReservaRepository;
+import com.lumahdev.reservasalasapi.domain.Sala.DtoCadastroSala;
+import com.lumahdev.reservasalasapi.domain.Sala.Sala;
+import com.lumahdev.reservasalasapi.domain.Sala.SalaRepository;
+import com.lumahdev.reservasalasapi.domain.Usuario.DtoCadastroUsuario;
+import com.lumahdev.reservasalasapi.domain.Usuario.Usuario;
+import com.lumahdev.reservasalasapi.domain.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;

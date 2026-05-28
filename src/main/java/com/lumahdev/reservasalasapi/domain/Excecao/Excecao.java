@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.Excecao;
+package com.lumahdev.reservasalasapi.domain.Excecao;
 
 import org.springframework.http.HttpStatus;
 

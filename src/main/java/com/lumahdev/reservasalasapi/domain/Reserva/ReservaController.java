@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.Reserva;
+package com.lumahdev.reservasalasapi.domain.Reserva;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

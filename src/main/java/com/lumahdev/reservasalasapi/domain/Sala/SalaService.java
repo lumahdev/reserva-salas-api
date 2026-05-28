@@ -1,14 +1,12 @@
-package com.lumahdev.reservasalasapi.Sala;
+package com.lumahdev.reservasalasapi.domain.Sala;
 
-import com.lumahdev.reservasalasapi.Excecao.Excecao;
-import com.lumahdev.reservasalasapi.Reserva.ReservaRepository;
+import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
+import com.lumahdev.reservasalasapi.domain.Reserva.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SalaService {

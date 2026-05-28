@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.Reserva;
+package com.lumahdev.reservasalasapi.domain.Reserva;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

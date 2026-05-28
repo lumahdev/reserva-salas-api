@@ -1,8 +1,8 @@
-package com.lumahdev.reservasalasapi.Reserva;
+package com.lumahdev.reservasalasapi.domain.Reserva;
 
-import com.lumahdev.reservasalasapi.Excecao.Excecao;
-import com.lumahdev.reservasalasapi.Sala.SalaRepository;
-import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
+import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
+import com.lumahdev.reservasalasapi.domain.Sala.SalaRepository;
+import com.lumahdev.reservasalasapi.domain.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

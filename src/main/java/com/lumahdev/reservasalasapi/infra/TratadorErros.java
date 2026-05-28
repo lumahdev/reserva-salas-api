@@ -1,5 +1,7 @@
-package com.lumahdev.reservasalasapi.Excecao;
+package com.lumahdev.reservasalasapi.infra;
 
+import com.lumahdev.reservasalasapi.domain.Excecao.DtoExcecao;
+import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class TratadorDeErros {
+public class TratadorErros {
 
     @ExceptionHandler(Excecao.class)
     public ResponseEntity<DtoExcecao> tratarExcecao(Excecao e) {
