@@ -28,4 +28,13 @@ public class TokenService {
                 .withExpiresAt(dataExpiracao())
                 .sign(algoritmo);
     }
+
+    public String getSubject(String token) {
+        Algorithm algoritmo = Algorithm.HMAC256(secret);
+        return JWT.require(algoritmo)
+                .withIssuer("reserva-salas-api")
+                .build()
+                .verify(token)
+                .getSubject();
+    }
 }

@@ -21,7 +21,7 @@ public class AuthenticationHandler implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        DtoExcecao dto = new DtoExcecao("Login ou senha inválidos.");
+        DtoExcecao dto = new DtoExcecao("Cabeçalho da requisição ausente.");
         response.getWriter().write(objectMapper.writeValueAsString(dto));
     }
 }

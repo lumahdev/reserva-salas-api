@@ -1,6 +1,7 @@
 package com.lumahdev.reservasalasapi.infra;
 
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.lumahdev.reservasalasapi.domain.Excecao.DtoExcecao;
 import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,12 @@ public class ControllerAdvice {
     }
 
     @ExceptionHandler(JWTCreationException.class)
-    public ResponseEntity<DtoExcecao> tratarErroJwt() {
+    public ResponseEntity<DtoExcecao> tratarErroJwtCriar() {
         return ResponseEntity.badRequest().body(new DtoExcecao("Ocorreu um erro ao tentar gerar um token JWT."));
+    }
+
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<DtoExcecao> tratarErroJwtValidar() {
+        return ResponseEntity.badRequest().body(new DtoExcecao("O token informado está expirado ou inválido."));
     }
 }
