@@ -13,16 +13,15 @@ import java.util.Map;
 public class TratadorDeErros {
 
     @ExceptionHandler(Excecao.class)
-    public ResponseEntity<DtoErro> tratarExcecao(Excecao e) {
+    public ResponseEntity<DtoExcecao> tratarExcecao(Excecao e) {
         return ResponseEntity
                 .status(e.getStatus())
-                .body(new DtoErro(e.getMessage()));
+                .body(new DtoExcecao(e.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> tratarValidacao(MethodArgumentNotValidException e) {
         Map<String, String> erros = new HashMap<>();
-
         e.getBindingResult()
                 .getFieldErrors()
                 .forEach(erro ->
@@ -31,14 +30,13 @@ public class TratadorDeErros {
                                 erro.getDefaultMessage()
                         )
                 );
-
         return ResponseEntity.badRequest().body(erros);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<DtoErro> tratarBodyVazio(HttpMessageNotReadableException e) {
+    public ResponseEntity<DtoExcecao> tratarBodyVazio() {
         return ResponseEntity
                 .badRequest()
-                .body(new DtoErro("Corpo da requisição é obrigatório."));
+                .body(new DtoExcecao("Corpo da requisição é obrigatório."));
     }
 }
