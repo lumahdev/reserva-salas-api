@@ -3,6 +3,7 @@ package com.lumahdev.reservasalasapi.domain.Excecao;
 import org.springframework.http.HttpStatus;
 
 public class Excecao extends RuntimeException {
+
     private final String message;
     private final HttpStatus status;
 
