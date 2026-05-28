@@ -12,6 +12,7 @@ import com.lumahdev.reservasalasapi.domain.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -24,6 +25,9 @@ public class TestPai {
     protected MockMvc mockMvc;
 
     @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
     protected UsuarioRepository usuarioRepository;
 
     @Autowired
@@ -33,7 +37,7 @@ public class TestPai {
     protected ReservaRepository reservaRepository;
 
     protected Usuario cadastraUsuario() {
-        return usuarioRepository.save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982", "jose_be", "Senha@123"), "$2a$12$VJRr5thC.Muz.01JkDa6BOd3hcHHIf0J.FwuuZeGAu.mTFte4wOYu"));
+        return usuarioRepository.save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982", "jose_be", "Senha@123"), passwordEncoder.encode("Senha@123")));
     }
 
     protected Sala cadastraSala() {

@@ -31,7 +31,7 @@ public class ConfigsSecurity {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers( "/entrar")
+                                .requestMatchers( "/auth/login")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())
