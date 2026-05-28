@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,11 +18,15 @@ public class UsuarioService {
     @Autowired
     private ReservaRepository reservaRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public Usuario cadastrarUsuario(DtoCadastroUsuario dto) {
-        if (repository.existsByTelefoneOrEmail(dto.telefone(), dto.email())) {
+        if (repository.existsByTelefoneOrEmailOrLogin(dto.telefone(), dto.email(), dto.login())) {
             throw new Excecao("Já existe um usuário cadastrado com estes dados.", HttpStatus.BAD_REQUEST);
         }
-        return repository.save(new Usuario(dto));
+        String hash = passwordEncoder.encode(dto.senha());
+        return repository.save(new Usuario(dto, hash));
     }
 
     public Page<DtoUsuario> buscarUsuarios(Pageable paginacao) {
