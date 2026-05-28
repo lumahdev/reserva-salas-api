@@ -9,7 +9,6 @@ import com.lumahdev.reservasalasapi.Sala.SalaRepository;
 import com.lumahdev.reservasalasapi.Usuario.DtoCadastroUsuario;
 import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
