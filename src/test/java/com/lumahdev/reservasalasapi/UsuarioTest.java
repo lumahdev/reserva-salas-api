@@ -1,12 +1,11 @@
-package com.lumahdev.reservasalasapi.Usuario;
+package com.lumahdev.reservasalasapi;
 
+import com.lumahdev.reservasalasapi.Usuario.Usuario;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,21 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class UsuarioTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private UsuarioRepository repository;
-
-    private Usuario cadastraUsuario() {
-        return repository.save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982")));
-    }
+class UsuarioTest extends com.lumahdev.reservasalasapi.Test {
 
     @BeforeEach
     void limparBanco() {
-        repository.deleteAll();
+        usuarioRepository.deleteAll();
     }
 
     @Test

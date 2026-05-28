@@ -1,5 +1,8 @@
-package com.lumahdev.reservasalasapi.Reserva;
+package com.lumahdev.reservasalasapi;
 
+import com.lumahdev.reservasalasapi.Reserva.DtoCadastroReserva;
+import com.lumahdev.reservasalasapi.Reserva.Reserva;
+import com.lumahdev.reservasalasapi.Reserva.ReservaRepository;
 import com.lumahdev.reservasalasapi.Sala.DtoCadastroSala;
 import com.lumahdev.reservasalasapi.Sala.Sala;
 import com.lumahdev.reservasalasapi.Sala.SalaRepository;
@@ -9,12 +12,8 @@ import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -22,36 +21,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ReservaTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private SalaRepository salaRepository;
-
-    @Autowired
-    private ReservaRepository reservaRepository;
-
-    private Usuario cadastraUsuario() {
-        return usuarioRepository.save(new Usuario(new DtoCadastroUsuario("José", "Bezerra", "jose@email.com", "11987590982")));
-    }
-
-    private Sala cadastraSala() {
-        return salaRepository.save(new Sala(new DtoCadastroSala("101", 50, "1", "Orquídeas")));
-    }
-
-    private Reserva cadastraReserva(Long salaId, Long usuarioId) {
-        LocalDate dataInicio = LocalDate.parse("2026-05-30");
-        LocalDate dataFim = LocalDate.parse("2026-06-30");
-        return reservaRepository.save(new Reserva(new DtoCadastroReserva(dataInicio,dataFim,salaId,usuarioId)));
-    }
+public class ReservaTest extends com.lumahdev.reservasalasapi.Test {
 
     @BeforeEach
     void limparBanco() {
+        usuarioRepository.deleteAll();
+        salaRepository.deleteAll();
         reservaRepository.deleteAll();
     }
 
@@ -216,7 +191,7 @@ public class ReservaTest {
     void listar200() throws Exception {
         Long usuarioId = cadastraUsuario().getUsuarioId();
         Long salaId = cadastraSala().getSalaId();
-        Reserva reserva = cadastraReserva(salaId, usuarioId);
+        cadastraReserva(salaId, usuarioId);
         mockMvc.perform(get("/reservas"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").exists())
@@ -255,7 +230,6 @@ public class ReservaTest {
         Long usuarioId = cadastraUsuario().getUsuarioId();
         Long salaId = cadastraSala().getSalaId();
         Reserva reserva = cadastraReserva(salaId, usuarioId);
-        Long reservaId = reserva.getReservaId();
         mockMvc.perform(get("/reservas/usuarios/" + usuarioId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").exists())
@@ -278,7 +252,6 @@ public class ReservaTest {
         Long usuarioId = cadastraUsuario().getUsuarioId();
         Long salaId = cadastraSala().getSalaId();
         Reserva reserva = cadastraReserva(salaId, usuarioId);
-        Long reservaId = reserva.getReservaId();
         mockMvc.perform(get("/reservas/salas/" + salaId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id").exists())

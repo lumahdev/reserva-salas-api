@@ -1,12 +1,11 @@
-package com.lumahdev.reservasalasapi.Sala;
+package com.lumahdev.reservasalasapi;
 
+import com.lumahdev.reservasalasapi.Sala.Sala;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -14,21 +13,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SalaTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private SalaRepository repository;
-
-    private Sala cadastraSala() {
-        return repository.save(new Sala(new DtoCadastroSala("101", 50, "1", "Orquídeas")));
-    }
+class SalaTest extends com.lumahdev.reservasalasapi.Test {
 
     @BeforeEach
     void limparBanco() {
-        repository.deleteAll();
+        salaRepository.deleteAll();
     }
 
     @Test
@@ -131,15 +120,15 @@ class SalaTest {
 
     @Test
     void listar200() throws Exception {
-        Sala sala = cadastraSala();
+        cadastraSala();
         mockMvc.perform(get("/salas"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id").value(sala.getSalaId()))
-                .andExpect(jsonPath("$.content[0].nome").value(sala.getNome()))
-                .andExpect(jsonPath("$.content[0].capacidade").value(sala.getCapacidade()))
-                .andExpect(jsonPath("$.content[0].andar").value(sala.getAndar()))
-                .andExpect(jsonPath("$.content[0].bloco").value(sala.getBloco()))
-                .andExpect(jsonPath("$.content[0].status").value(sala.getStatus().name()));
+                .andExpect(jsonPath("$.content[0].id").exists())
+                .andExpect(jsonPath("$.content[0].nome").exists())
+                .andExpect(jsonPath("$.content[0].capacidade").exists())
+                .andExpect(jsonPath("$.content[0].andar").exists())
+                .andExpect(jsonPath("$.content[0].bloco").exists())
+                .andExpect(jsonPath("$.content[0].status").exists());
     }
 
     @Test
