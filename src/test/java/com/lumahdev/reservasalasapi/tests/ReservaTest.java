@@ -1,14 +1,8 @@
-package com.lumahdev.reservasalasapi;
+package com.lumahdev.reservasalasapi.tests;
 
-import com.lumahdev.reservasalasapi.Reserva.DtoCadastroReserva;
 import com.lumahdev.reservasalasapi.Reserva.Reserva;
-import com.lumahdev.reservasalasapi.Reserva.ReservaRepository;
-import com.lumahdev.reservasalasapi.Sala.DtoCadastroSala;
-import com.lumahdev.reservasalasapi.Sala.Sala;
-import com.lumahdev.reservasalasapi.Sala.SalaRepository;
-import com.lumahdev.reservasalasapi.Usuario.DtoCadastroUsuario;
-import com.lumahdev.reservasalasapi.Usuario.Usuario;
-import com.lumahdev.reservasalasapi.Usuario.UsuarioRepository;
+import com.lumahdev.reservasalasapi.domain.TestInterface;
+import com.lumahdev.reservasalasapi.domain.TestPai;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
@@ -21,10 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ReservaTest extends com.lumahdev.reservasalasapi.Test {
+public class ReservaTest extends TestPai implements TestInterface {
 
     @BeforeEach
-    void limparBanco() {
+    public void limparBanco() {
         usuarioRepository.deleteAll();
         salaRepository.deleteAll();
         reservaRepository.deleteAll();

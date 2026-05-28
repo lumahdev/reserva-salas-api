@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi;
+package com.lumahdev.reservasalasapi.domain;
 
 import com.lumahdev.reservasalasapi.Reserva.DtoCadastroReserva;
 import com.lumahdev.reservasalasapi.Reserva.Reserva;
@@ -18,7 +18,7 @@ import java.time.LocalDate;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class Test {
+public class TestPai {
 
     @Autowired
     protected MockMvc mockMvc;

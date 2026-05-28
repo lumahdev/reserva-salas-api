@@ -1,6 +1,8 @@
-package com.lumahdev.reservasalasapi;
+package com.lumahdev.reservasalasapi.tests;
 
 import com.lumahdev.reservasalasapi.Sala.Sala;
+import com.lumahdev.reservasalasapi.domain.TestInterface;
+import com.lumahdev.reservasalasapi.domain.TestPai;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
@@ -13,10 +15,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class SalaTest extends com.lumahdev.reservasalasapi.Test {
+class SalaTest extends TestPai implements TestInterface {
 
     @BeforeEach
-    void limparBanco() {
+    public void limparBanco() {
         salaRepository.deleteAll();
     }
 
