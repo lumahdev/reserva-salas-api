@@ -12,7 +12,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 @Component
-public class HandlerNaoAutorizado implements AuthenticationEntryPoint {
+public class HandlerNaoAutenticado implements AuthenticationEntryPoint {
 
     @Autowired
     private ObjectMapper objectMapper;
