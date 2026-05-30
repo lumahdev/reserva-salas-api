@@ -1,6 +1,6 @@
 package com.lumahdev.reservasalasapi.infra.security;
 
-import com.lumahdev.reservasalasapi.infra.AuthenticationHandler;
+import com.lumahdev.reservasalasapi.infra.HandlerNaoAutorizado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SegurancaConfigs {
+public class ConfigsSeguranca {
 
     @Autowired
-    private AuthenticationHandler tratadorLogin;
+    private HandlerNaoAutorizado tratadorLogin;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -34,7 +34,7 @@ public class SegurancaConfigs {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AutenticacaoFilter authenticationFilter) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, FilterAutenticacao filterAutorizado) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -45,7 +45,7 @@ public class SegurancaConfigs {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filterAutorizado, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(tratadorLogin))
                 .build();

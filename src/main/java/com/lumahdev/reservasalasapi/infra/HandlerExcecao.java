@@ -1,8 +1,5 @@
 package com.lumahdev.reservasalasapi.infra;
 
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.lumahdev.reservasalasapi.domain.Excecao.DtoExcecao;
 import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class ExcecaoHandlers {
+public class HandlerExcecao {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> tratarValidacaoDtos(MethodArgumentNotValidException e) {
