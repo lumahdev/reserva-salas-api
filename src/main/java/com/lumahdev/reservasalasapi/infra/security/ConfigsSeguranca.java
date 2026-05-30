@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class ConfigsSeguranca {
 
     @Autowired
-    private HandlerNaoAutorizado handlerNaoAutorizado;
+    private HandlerNaoAutenticado handlerNaoAutenticado;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -46,7 +46,7 @@ public class ConfigsSeguranca {
                         .anyRequest().authenticated())
                 .addFilterBefore(filterAutenticacao, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(handlerNaoAutorizado))
+                        .authenticationEntryPoint(handlerNaoAutenticado))
                 .build();
     }
 }
