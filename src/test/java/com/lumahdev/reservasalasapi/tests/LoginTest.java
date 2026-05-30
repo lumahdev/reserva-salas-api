@@ -34,12 +34,12 @@ public class LoginTest extends TestPai implements TestInterface {
                         """)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("Bad credentials"));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Credenciais inválidas."));
     }
 
     @Test
-    void login400InfosIncorretas() throws Exception {
+    void login400UsuarioInexistente() throws Exception {
         mockMvc.perform(post("/auth/login")
                         .content("""
                             {
@@ -49,8 +49,8 @@ public class LoginTest extends TestPai implements TestInterface {
                         """)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.message").value("UserDetailsService returned null, which is an interface contract violation"));
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Não existe um usuário com as credenciais informadas."));
     }
 
     @Test
