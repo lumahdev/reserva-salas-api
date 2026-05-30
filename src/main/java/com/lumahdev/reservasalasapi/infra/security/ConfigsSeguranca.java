@@ -21,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class ConfigsSeguranca {
 
     @Autowired
-    private HandlerNaoAutorizado tratadorLogin;
+    private HandlerNaoAutorizado handlerNaoAutorizado;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -34,7 +34,7 @@ public class ConfigsSeguranca {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, FilterAutenticacao filterAutorizado) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, FilterAutenticacao filterAutenticacao) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -45,9 +45,9 @@ public class ConfigsSeguranca {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
                         .anyRequest().authenticated())
-                .addFilterBefore(filterAutorizado, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filterAutenticacao, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(tratadorLogin))
+                        .authenticationEntryPoint(handlerNaoAutorizado))
                 .build();
     }
 }
