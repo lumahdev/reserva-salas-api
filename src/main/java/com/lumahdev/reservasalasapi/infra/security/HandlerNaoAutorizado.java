@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.infra;
+package com.lumahdev.reservasalasapi.infra.security;
 
 import com.lumahdev.reservasalasapi.domain.Excecao.DtoExcecao;
 import jakarta.servlet.http.HttpServletRequest;
