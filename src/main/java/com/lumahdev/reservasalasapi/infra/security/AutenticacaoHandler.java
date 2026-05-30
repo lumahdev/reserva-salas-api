@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -19,23 +20,24 @@ public class AutenticacaoHandler implements AuthenticationEntryPoint {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private String trataException(AuthenticationException exception, HttpServletResponse response) {
+    private String trataException(AuthenticationException exception) {
         if (exception instanceof BadCredentialsException) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return "Credenciais inválidas.";
         }
         if (exception instanceof InternalAuthenticationServiceException) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "Não existe um usuário com as credenciais informadas.";
         }
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        if (exception instanceof InsufficientAuthenticationException) {
+            return "É necessário estar autenticado para acessar esta funcionalidade.";
+        }
         return exception.getMessage();
     }
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setContentType("application/json");
-        String mensagem = trataException(authException, response);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        String mensagem = trataException(authException);
         response.getWriter().write(objectMapper.writeValueAsString(new DtoExcecao(mensagem)));
 //        response.getWriter().write(objectMapper.writeValueAsString(authException.getClass().getName()));
     }
