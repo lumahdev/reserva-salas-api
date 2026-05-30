@@ -125,7 +125,7 @@ public class ReservaTest extends TestPai implements TestInterface {
                         ))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Data final não pode ser anterior à data inicial."));
+                .andExpect(jsonPath("$.dataFim").value("Data final não pode ser anterior à data inicial."));
     }
 
     @Test
