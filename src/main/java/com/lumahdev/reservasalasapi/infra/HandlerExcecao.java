@@ -37,14 +37,4 @@ public class HandlerExcecao {
     public ResponseEntity<DtoExcecao> tratarBodyVazio() {
         return ResponseEntity.badRequest().body(new DtoExcecao("Corpo da requisição é obrigatório."));
     }
-
-//    @ExceptionHandler(JWTCreationException.class)
-//    public ResponseEntity<DtoExcecao> tratarErroJwtCriar() {
-//        return ResponseEntity.badRequest().body(new DtoExcecao("Ocorreu um erro ao tentar gerar um token JWT."));
-//    }
-//
-//    @ExceptionHandler(JWTVerificationException.class)
-//    public ResponseEntity<DtoExcecao> tratarErroJwtValidar() {
-//        return ResponseEntity.badRequest().body(new DtoExcecao("O token informado está expirado ou inválido."));
-//    }
 }
