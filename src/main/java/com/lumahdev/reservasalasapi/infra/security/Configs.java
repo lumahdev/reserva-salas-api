@@ -17,7 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class ConfigsSecurity {
+public class Configs {
 
     @Autowired
     private HandlerAuth handlerAuth;
@@ -43,6 +43,7 @@ public class ConfigsSecurity {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(filterAutenticacao, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
