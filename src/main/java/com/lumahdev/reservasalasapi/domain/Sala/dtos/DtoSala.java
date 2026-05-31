@@ -1,4 +1,7 @@
-package com.lumahdev.reservasalasapi.domain.Sala;
+package com.lumahdev.reservasalasapi.domain.Sala.dtos;
+
+import com.lumahdev.reservasalasapi.domain.Sala.Sala;
+import com.lumahdev.reservasalasapi.domain.Sala.SalaStatusEnum;
 
 public record DtoSala (
         Long id,

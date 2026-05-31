@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.domain.Sala;
+package com.lumahdev.reservasalasapi.domain.Sala.dtos;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

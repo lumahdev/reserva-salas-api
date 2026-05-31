@@ -1,13 +1,13 @@
 package com.lumahdev.reservasalasapi.domain;
 
 import com.jayway.jsonpath.JsonPath;
-import com.lumahdev.reservasalasapi.domain.Reserva.DtoCadastroReserva;
+import com.lumahdev.reservasalasapi.domain.Reserva.dtos.DtoCadastroReserva;
 import com.lumahdev.reservasalasapi.domain.Reserva.Reserva;
 import com.lumahdev.reservasalasapi.domain.Reserva.ReservaRepository;
-import com.lumahdev.reservasalasapi.domain.Sala.DtoCadastroSala;
+import com.lumahdev.reservasalasapi.domain.Sala.dtos.DtoCadastroSala;
 import com.lumahdev.reservasalasapi.domain.Sala.Sala;
 import com.lumahdev.reservasalasapi.domain.Sala.SalaRepository;
-import com.lumahdev.reservasalasapi.domain.Usuario.DtoCadastroUsuario;
+import com.lumahdev.reservasalasapi.domain.Usuario.dtos.DtoCadastroUsuario;
 import com.lumahdev.reservasalasapi.domain.Usuario.Usuario;
 import com.lumahdev.reservasalasapi.domain.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.time.LocalDate;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc

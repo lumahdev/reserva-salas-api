@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.domain.Usuario;
+package com.lumahdev.reservasalasapi.domain.Usuario.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

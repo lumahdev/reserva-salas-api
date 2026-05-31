@@ -1,5 +1,8 @@
 package com.lumahdev.reservasalasapi.domain.Usuario;
 
+import com.lumahdev.reservasalasapi.domain.Usuario.dtos.DtoCadastroUsuario;
+import com.lumahdev.reservasalasapi.domain.Usuario.dtos.DtoEditarUsuario;
+import com.lumahdev.reservasalasapi.domain.Usuario.dtos.DtoUsuario;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

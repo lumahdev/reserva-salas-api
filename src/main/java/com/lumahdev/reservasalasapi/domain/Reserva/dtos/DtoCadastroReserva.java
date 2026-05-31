@@ -1,4 +1,4 @@
-package com.lumahdev.reservasalasapi.domain.Reserva;
+package com.lumahdev.reservasalasapi.domain.Reserva.dtos;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;

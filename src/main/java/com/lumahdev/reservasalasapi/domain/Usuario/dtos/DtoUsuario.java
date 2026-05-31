@@ -1,4 +1,6 @@
-package com.lumahdev.reservasalasapi.domain.Usuario;
+package com.lumahdev.reservasalasapi.domain.Usuario.dtos;
+
+import com.lumahdev.reservasalasapi.domain.Usuario.Usuario;
 
 public record DtoUsuario (
         Long id,

@@ -1,5 +1,6 @@
 package com.lumahdev.reservasalasapi.domain.Usuario;
 
+import com.lumahdev.reservasalasapi.domain.Usuario.dtos.DtoCadastroUsuario;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

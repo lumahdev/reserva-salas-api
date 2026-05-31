@@ -1,5 +1,6 @@
 package com.lumahdev.reservasalasapi.domain.Sala;
 
+import com.lumahdev.reservasalasapi.domain.Sala.dtos.DtoCadastroSala;
 import jakarta.persistence.*;
 
 @Entity

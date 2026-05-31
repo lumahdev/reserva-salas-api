@@ -1,6 +1,8 @@
 package com.lumahdev.reservasalasapi.domain.Reserva;
 
 import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
+import com.lumahdev.reservasalasapi.domain.Reserva.dtos.DtoCadastroReserva;
+import com.lumahdev.reservasalasapi.domain.Reserva.dtos.DtoReserva;
 import com.lumahdev.reservasalasapi.domain.Sala.SalaRepository;
 import com.lumahdev.reservasalasapi.domain.Usuario.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,6 @@
 package com.lumahdev.reservasalasapi.domain.Reserva;
 
+import com.lumahdev.reservasalasapi.domain.Reserva.dtos.DtoCadastroReserva;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;

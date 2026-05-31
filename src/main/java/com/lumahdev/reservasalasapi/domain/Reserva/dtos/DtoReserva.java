@@ -1,4 +1,7 @@
-package com.lumahdev.reservasalasapi.domain.Reserva;
+package com.lumahdev.reservasalasapi.domain.Reserva.dtos;
+
+import com.lumahdev.reservasalasapi.domain.Reserva.Reserva;
+import com.lumahdev.reservasalasapi.domain.Reserva.ReservaStatusEnum;
 
 import java.time.LocalDate;
 

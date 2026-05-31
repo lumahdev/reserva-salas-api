@@ -2,6 +2,8 @@ package com.lumahdev.reservasalasapi.domain.Sala;
 
 import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
 import com.lumahdev.reservasalasapi.domain.Reserva.ReservaRepository;
+import com.lumahdev.reservasalasapi.domain.Sala.dtos.DtoCadastroSala;
+import com.lumahdev.reservasalasapi.domain.Sala.dtos.DtoSala;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
