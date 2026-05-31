@@ -17,10 +17,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class ConfigsSeguranca {
+public class ConfigsSecurity {
 
     @Autowired
-    private AutenticacaoHandler autenticacaoHandler;
+    private HandlerAuth handlerAuth;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -33,7 +33,7 @@ public class ConfigsSeguranca {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, FilterAutenticacao filterAutenticacao) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, FilterAuth filterAutenticacao) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -46,7 +46,7 @@ public class ConfigsSeguranca {
                         .anyRequest().authenticated())
                 .addFilterBefore(filterAutenticacao, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(autenticacaoHandler))
+                        .authenticationEntryPoint(handlerAuth))
                 .build();
     }
 }
