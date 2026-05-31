@@ -6,15 +6,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+//@SpringBootTest
+//@AutoConfigureMockMvc
 public class ReservaTest extends TestPai implements TestInterface {
 
     @BeforeEach
@@ -32,8 +32,8 @@ public class ReservaTest extends TestPai implements TestInterface {
                         .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
-                                "dataInicio": "2026-05-30",
-                                "dataFim": "2026-06-30",
+                                "dataInicio": "2050-12-31",
+                                "dataFim": "2051-12-31",
                                 "salaId": %d,
                                 "usuarioId": %d
                             }
@@ -44,8 +44,8 @@ public class ReservaTest extends TestPai implements TestInterface {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.dataInicio").value("2026-05-30"))
-                .andExpect(jsonPath("$.dataFim").value("2026-06-30"))
+                .andExpect(jsonPath("$.dataInicio").value("2050-12-31"))
+                .andExpect(jsonPath("$.dataFim").value("2051-12-31"))
                 .andExpect(jsonPath("$.salaId").value(salaId))
                 .andExpect(jsonPath("$.usuarioId").value(usuarioId))
                 .andExpect(jsonPath("$.status").value("ATIVA"));
@@ -114,8 +114,8 @@ public class ReservaTest extends TestPai implements TestInterface {
                         .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
-                                "dataInicio": "2026-05-30",
-                                "dataFim": "2026-05-29",
+                                "dataInicio": "2050-12-31",
+                                "dataFim": "2050-12-30",
                                 "salaId": %d,
                                 "usuarioId": %d
                             }
@@ -125,7 +125,7 @@ public class ReservaTest extends TestPai implements TestInterface {
                         ))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.dataFim").value("Data final não pode ser anterior à data inicial."));
+                .andExpect(jsonPath("$.message").value("Data final não pode ser anterior à data inicial."));
     }
 
     @Test
@@ -137,8 +137,8 @@ public class ReservaTest extends TestPai implements TestInterface {
                         .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
-                                "dataInicio": "2026-05-30",
-                                "dataFim": "2026-06-30",
+                                "dataInicio": "2050-12-31",
+                                "dataFim": "2051-12-31",
                                 "salaId": %d,
                                 "usuarioId": %d
                             }
@@ -158,8 +158,8 @@ public class ReservaTest extends TestPai implements TestInterface {
                         .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
-                                "dataInicio": "2026-05-30",
-                                "dataFim": "2026-06-30",
+                                "dataInicio": "2050-12-31",
+                                "dataFim": "2051-12-31",
                                 "salaId": 99999,
                                 "usuarioId": %d
                             }
@@ -179,8 +179,8 @@ public class ReservaTest extends TestPai implements TestInterface {
                         .header(HttpHeaders.AUTHORIZATION, bearerToken())
                         .content("""
                             {
-                                "dataInicio": "2026-05-30",
-                                "dataFim": "2026-06-30",
+                                "dataInicio": "2050-12-31",
+                                "dataFim": "2051-12-31",
                                 "salaId": %d,
                                 "usuarioId": 9999
                             }

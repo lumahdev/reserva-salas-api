@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -69,8 +70,8 @@ public class TestPai {
     }
 
     protected Long criaReserva(Long salaId, Long usuarioId) {
-        LocalDate dataInicio = LocalDate.parse("2026-05-30");
-        LocalDate dataFim = LocalDate.parse("2026-06-30");
+        LocalDate dataInicio = LocalDate.parse("2050-12-31");
+        LocalDate dataFim = LocalDate.parse("2051-12-31");
         return reservaRepository
                 .save(new Reserva(new DtoCadastroReserva(dataInicio, dataFim, salaId, usuarioId)))
                 .getReservaId();
