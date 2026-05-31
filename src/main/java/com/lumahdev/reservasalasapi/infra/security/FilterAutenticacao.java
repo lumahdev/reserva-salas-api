@@ -47,6 +47,12 @@ public class FilterAutenticacao extends OncePerRequestFilter {
         return null;
     }
 
+    private void criaErro(String mensagem, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write(objectMapper.writeValueAsString(new DtoExcecao(mensagem)));
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -62,14 +68,10 @@ public class FilterAutenticacao extends OncePerRequestFilter {
                     }
                 }
             } catch (JWTDecodeException e) {
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write(objectMapper.writeValueAsString(new DtoExcecao("O token informado tem um formato inválido.")));
+                criaErro("O token informado tem um formato inválido.", response);
                 return;
             } catch (TokenExpiredException e) {
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write(objectMapper.writeValueAsString(new DtoExcecao("O token informado está expirado.")));
+                criaErro("O token informado está expirado.", response);
                 return;
             }
         }
