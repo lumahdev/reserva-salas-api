@@ -2,6 +2,7 @@ package com.lumahdev.reservasalasapi.domain.Sala;
 
 import com.lumahdev.reservasalasapi.domain.Sala.dtos.DtoCadastroSala;
 import com.lumahdev.reservasalasapi.domain.Sala.dtos.DtoSala;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("salas")
+@SecurityRequirement(name = "bearer-key")
 public class SalaController {
 
     @Autowired

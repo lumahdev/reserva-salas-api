@@ -3,6 +3,7 @@ package com.lumahdev.reservasalasapi.domain.Usuario;
 import com.lumahdev.reservasalasapi.domain.Usuario.dtos.DtoCadastroUsuario;
 import com.lumahdev.reservasalasapi.domain.Usuario.dtos.DtoEditarUsuario;
 import com.lumahdev.reservasalasapi.domain.Usuario.dtos.DtoUsuario;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,24 +29,28 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new DtoUsuario(usuario));
     }
 
+    @SecurityRequirement(name = "bearer-key")
     @GetMapping
     public ResponseEntity<Page<DtoUsuario>> listarUsuarios(@PageableDefault(size = 10) Pageable paginacao) {
         Page<DtoUsuario> usuarios = service.buscarUsuarios(paginacao);
         return ResponseEntity.ok(usuarios);
     }
 
+    @SecurityRequirement(name = "bearer-key")
     @GetMapping("/{id}")
     public ResponseEntity<DtoUsuario> listarUsuario(@PathVariable Long id) {
         Usuario usuario = service.buscarUsuario(id);
         return ResponseEntity.ok(new DtoUsuario(usuario));
     }
 
+    @SecurityRequirement(name = "bearer-key")
     @PutMapping("/{id}")
     public ResponseEntity<DtoUsuario> editarUsuario(@PathVariable Long id, @RequestBody @Valid DtoEditarUsuario dto) {
         Usuario usuario = service.editarUsuario(id, dto);
         return ResponseEntity.ok(new DtoUsuario(usuario));
     }
 
+    @SecurityRequirement(name = "bearer-key")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletarUsuario(@PathVariable Long id) {
         service.deletarUsuario(id);
