@@ -46,9 +46,11 @@ Dados id e email e/ou telefone, atualiza a informação do usuário, caso ele ex
 }
 ```
 
-### 5. Deletar usuário
-Dados id do usuário, o deleta do banco de dados, junto com suas reservas feitas.
-- **DELETE** `/usuarios/{id}`
+[//]: # (### 5. Deletar usuário)
+
+[//]: # (Dados id do usuário, o deleta do banco de dados, junto com suas reservas feitas.)
+
+[//]: # (- **DELETE** `/usuarios/{id}`)
 
 ### 6. Cadastrar sala
 Dados nome, capacidade, andar e bloco, cadastra uma sala. Os dados não podem ser brancos ou nulos. Não é possível cadastrar uma sala com nome já existentes.
