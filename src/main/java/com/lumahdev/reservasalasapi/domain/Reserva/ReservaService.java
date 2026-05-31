@@ -3,13 +3,14 @@ package com.lumahdev.reservasalasapi.domain.Reserva;
 import com.lumahdev.reservasalasapi.domain.Excecao.Excecao;
 import com.lumahdev.reservasalasapi.domain.Reserva.dtos.DtoCadastroReserva;
 import com.lumahdev.reservasalasapi.domain.Reserva.dtos.DtoReserva;
-import com.lumahdev.reservasalasapi.domain.Sala.SalaRepository;
-import com.lumahdev.reservasalasapi.domain.Usuario.UsuarioRepository;
+import com.lumahdev.reservasalasapi.domain.Reserva.validations.ValidadorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ReservaService {
@@ -18,31 +19,10 @@ public class ReservaService {
     private ReservaRepository reservaRepository;
 
     @Autowired
-    private SalaRepository salaRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private List<ValidadorInterface> validadores;
 
     public Reserva cadastrarReserva(DtoCadastroReserva dto) {
-        if (!salaRepository.existsById(dto.salaId())) {
-            throw new Excecao("Não existe uma sala com este ID.", HttpStatus.NOT_FOUND);
-        }
-        if (!usuarioRepository.existsById(dto.usuarioId())) {
-            throw new Excecao("Não existe um usuário com este ID.", HttpStatus.NOT_FOUND);
-        }
-        if (dto.dataFim().isBefore(dto.dataInicio())) {
-            throw new Excecao("Data final não pode ser anterior à data inicial.", HttpStatus.BAD_REQUEST);
-        }
-        boolean salaOcupada = reservaRepository
-                .existsBySalaIdAndStatusAndDataInicioLessThanEqualAndDataFimGreaterThanEqual(
-                    dto.salaId(),
-                    ReservaStatusEnum.ATIVA,
-                    dto.dataFim(),
-                    dto.dataInicio()
-                );
-        if (salaOcupada) {
-            throw new Excecao("Já existe uma reserva para esta sala no período especificado.", HttpStatus.BAD_REQUEST);
-        }
+        validadores.forEach(v -> v.validar(dto));
         Reserva reserva = new Reserva(dto);
         return reservaRepository.save(reserva);
     }
