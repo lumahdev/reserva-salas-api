@@ -6,7 +6,7 @@ API REST para a reserva de salas, com implementação de banco de dados, testes,
 - Banco de Dados **PostgreSQL**
 - Testes com **JUnit** e **MockMVC**
 - Autenticação e segurança com **JWT** + **Auth0**
-- **Swagger** para documentação
+- **SpringDocs** para documentação
 
 ## Entidades
 | Entidade | Atributos                                      |
