@@ -2,7 +2,7 @@
 API REST para a reserva de salas, com implementação de banco de dados, testes, autenticação de rotas e documentação.
 
 ## Tecnologias
-- Framework **Spring Boot**
+- **Java** com framework **Spring**
 - Banco de Dados **PostgreSQL**
 - Testes com **JUnit** e **MockMVC**
 - Autenticação e segurança com **JWT** + **Auth0**
