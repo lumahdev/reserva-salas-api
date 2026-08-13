@@ -1,4 +1,4 @@
-# 📝 reserva-salas-api
+# 📝 API para Reserva de Salas
 API REST para a reserva de salas, com implementação de banco de dados, testes, autenticação de rotas e documentação.
 <img width="1397" height="871" alt="image" src="https://github.com/user-attachments/assets/8cfda589-8ca7-4f9e-a5b4-0a2a2fdb0dc1" />
 
